@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MessagingToolboxJBoss 6.0.0
+Bundle-SymbolicName: com.monzware.messaging.toolbox.jbossext600;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.monzware.messaging.toolbox.jboss.Activator
+Bundle-Vendor: Monzware
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.monzware.messaging.toolbox.core;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

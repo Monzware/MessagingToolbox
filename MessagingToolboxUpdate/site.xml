@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201107281551.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201107281551"/>
+   <feature url="features/com.monzware.messaging.toolbox.jboss.feature_1.0.0.201107281553.jar" id="com.monzware.messaging.toolbox.jboss.feature" version="1.0.0.201107281553">
+      <category name="com.monzware.messaging.toolbox.category.impl"/>
+   </feature>
+   <category-def name="com.monzware.messaging.toolbox.category.impl" label="Implementation plugins">
+      <description>
+         Vendor specific imlementation plugins
+      </description>
+   </category-def>
+</site>

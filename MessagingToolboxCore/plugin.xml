@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="com.monzware.messaging.vendor" name="Messaging Vendor Extension" schema="schema/com.monzware.messaging.vendor.exsd"/>
+   <extension-point id="com.monzware.messaging.monitor" name="Message monitor" schema="schema/com.monzware.messaging.monitor.exsd"/>
+   
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="com.monzware.messaging.toolbox.core"
+            name="Messaging Toolbox">
+      </category>
+      <wizard
+            category="com.monzware.messaging.toolbox.core"
+            class="com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizard"
+            icon="icons/sample.gif"
+            id="com.monzware.messaging.toolbox.core.wizards.ServerWizard.SampleNewWizard"
+            name="Messaging Server configuration">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.monzware.messaging.toolbox.view.category"
+            class="com.monzware.messaging.ui.EndpointTreeView"
+            id="MessagingToolboxCore.EndpointTreeView"
+            name="Endpoint view"
+            restorable="true">
+      </view>
+      <category
+            id="com.monzware.messaging.toolbox.view.category"
+            name="Messaging Toolbox">
+      </category>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.monzware.messaging.ui.preferences.MessagingToolboxPreferences"
+            id="com.monzware.messaging.ui.preferences.MessagingToolboxPreferences"
+            name="Messaging Toolbox">
+      </page>
+   </extension>
+
+</plugin>

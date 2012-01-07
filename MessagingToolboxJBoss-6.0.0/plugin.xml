@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="com.monzware.messaging.toolbox.ext600"
+         name="JBoss Messaging vendor"
+         point="com.monzware.messaging.vendor">
+      <facade
+            class="com.monzware.messaging.toolbox.jboss.JBossVendorFacade"
+            name="JBoss 6.0.0">
+      </facade>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.monzware.messaging.ui.preferences.MessagingToolboxPreferences"
+            class="com.monzware.messaging.ui.preferences.jboss.VendorPreferences"
+            id="com.monzware.messaging.ui.preferences.jboss600.VendorPreferences"
+            name="JBoss 6.0.0 Configuration">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.monzware.messaging.ui.preferences.jboss.VendorPreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>
