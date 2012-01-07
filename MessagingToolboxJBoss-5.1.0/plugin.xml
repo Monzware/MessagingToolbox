@@ -18,8 +18,8 @@
             name="Server configuration">
       </configurationwizardpage>
       <configurationwizardpage
-            class="com.monzware.messaging.ui.jboss.QueuesWizardPage"
-            name="Queues">
+            class="com.monzware.messaging.ui.jboss.DestinationWizardPage"
+            name="Destinations">
       </configurationwizardpage>
    </extension>
    

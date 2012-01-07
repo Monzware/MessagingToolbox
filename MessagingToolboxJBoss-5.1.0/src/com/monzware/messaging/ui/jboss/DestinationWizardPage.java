@@ -18,8 +18,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
@@ -27,14 +27,14 @@ import com.monzware.messaging.toolbox.core.wizards.intf.MessagingSystemWizardExt
 import com.monzware.messaging.toolbox.jboss.Activator;
 import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
 
-public class QueuesWizardPage extends WizardPage implements MessagingSystemWizardExtention {
+public class DestinationWizardPage extends WizardPage implements MessagingSystemWizardExtention {
 
-	private Text systemName;
-	private Text port;
 	private EndpointSystem system;
+	private Table table;
 
-	public QueuesWizardPage() {
-		super("Queues");
+	public DestinationWizardPage() {
+		super("Destinations");
+		setDescription("Select destinations to use for system");
 	}
 
 	@Override
@@ -45,30 +45,51 @@ public class QueuesWizardPage extends WizardPage implements MessagingSystemWizar
 		layout.numColumns = 2;
 		layout.verticalSpacing = 9;
 
-		Label label = new Label(container, SWT.NULL);
-		label.setText("&Server:");
+		/*
+		 * Label label = new Label(container, SWT.NULL);
+		 * label.setText("&Server:");
+		 * 
+		 * Text systemName = new Text(container, SWT.BORDER | SWT.SINGLE);
+		 * systemName.setEditable(true);
+		 * 
+		 * GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		 * systemName.setLayoutData(gd);
+		 */
 
-		systemName = new Text(container, SWT.BORDER | SWT.SINGLE);
-		systemName.setEditable(true);
+		table = new Table(container, SWT.SINGLE | SWT.BORDER);
+		
+		
+		//table.setItemCount(100);
 
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		systemName.setLayoutData(gd);
+		/*
+		 * table.addListener(SWT.SetData, new Listener() { public void
+		 * handleEvent(Event event) { TableItem item = (TableItem) event.item;
+		 * int index = table.indexOf(item); item.setText("Item " + index);
+		 * System.out.println(item.getText()); } });
+		 */
+
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		table.setLayoutData(gd);
 
 		setControl(container);
-
-		// lookupDestinations();
 
 	}
 
 	private void lookupDestinations() {
+		
+		table.removeAll();
 
 		Thread currentThread = Thread.currentThread();
 		ClassLoader oldCL = currentThread.getContextClassLoader();
 
 		try {
 
-			String port = system.getPortNumber();
-			String serverName = system.getServerName();
+			//String port = system.getPortNumber();
+			//String serverName = system.getServerName();
+			
+			String port = "9199";
+			String serverName = "localhost";
+
 
 			IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
 			String configPath = ps.getString(VendorPreferenceConstants.P_PATH);
@@ -92,12 +113,28 @@ public class QueuesWizardPage extends WizardPage implements MessagingSystemWizar
 
 			jndiContext = new InitialContext(properties);
 
-			NamingEnumeration<NameClassPair> list = jndiContext.list("/queue");
-			while (list.hasMore()) {
-				NameClassPair nc = list.next();
+			
+			NamingEnumeration<NameClassPair> queueList = jndiContext.list("/queue");
+			while (queueList.hasMore()) {
+				NameClassPair nc = queueList.next();
 				System.out.println(nc.getName());
 				nc.getClassName();
+				
+				TableItem item = new TableItem (table, SWT.NONE);
+				item.setText ("/queue/" + nc.getName());
 			}
+			
+			NamingEnumeration<NameClassPair> topicList = jndiContext.list("/topic");
+			while (topicList.hasMore()) {
+				NameClassPair nc = topicList.next();
+				System.out.println(nc.getName());
+				nc.getClassName();
+				
+				TableItem item = new TableItem (table, SWT.NONE);
+				item.setText ("/topic/" + nc.getName());
+			}
+			
+			
 
 		} catch (NamingException e) {
 			e.printStackTrace();

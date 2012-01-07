@@ -4,7 +4,6 @@ import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -19,7 +18,6 @@ import org.eclipse.swt.widgets.Text;
 
 import com.monzware.messaging.toolbox.jboss.Activator;
 import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
-import com.monzware.messaging.ui.preferences.jboss.VendorPreferences;
 
 public class VenderConfigurationWizardPage extends WizardPage {
 

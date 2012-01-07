@@ -6,7 +6,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
@@ -24,7 +26,6 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 
 	public ServerWizardPage(String pageName) {
 		super(pageName);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ServerWizardPage(String pageName, String title, ImageDescriptor titleImage) {
@@ -55,6 +56,8 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 		port.setEditable(true);
 
 		setControl(container);
+		
+		
 
 	}
 
