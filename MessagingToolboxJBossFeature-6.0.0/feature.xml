@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.monzware.messaging.toolbox.jboss.feature"
+      id="com.monzware.messaging.toolbox.jboss600.feature"
       label="Eclipse Messaging Toolbox - JBoss 6.0.0"
       version="1.0.0.qualifier">
 
