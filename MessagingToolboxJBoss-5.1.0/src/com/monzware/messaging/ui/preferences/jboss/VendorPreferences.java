@@ -2,6 +2,7 @@ package com.monzware.messaging.ui.preferences.jboss;
 
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -22,6 +23,8 @@ public class VendorPreferences extends FieldEditorPreferencePage implements IWor
 	 */
 	public void createFieldEditors() {
 		addField(new DirectoryFieldEditor(VendorPreferenceConstants.P_PATH, "&JBoss 5.1.0 path:", getFieldEditorParent()));
+		addField(new StringFieldEditor(VendorPreferenceConstants.DEFAULTSERVER, "&Default server:", getFieldEditorParent()));
+		addField(new StringFieldEditor(VendorPreferenceConstants.DEFAULTPORT, "&Default port:", getFieldEditorParent()));
 	}
 
 	/*

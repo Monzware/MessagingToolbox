@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collection;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -18,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -31,6 +33,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 	private EndpointSystem system;
 	private Table table;
+	private Label statusLabel;
 
 	public DestinationWizardPage() {
 		super("Destinations");
@@ -42,13 +45,10 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
-		layout.numColumns = 2;
+		layout.numColumns = 1;
 		layout.verticalSpacing = 9;
 
 		/*
-		 * Label label = new Label(container, SWT.NULL);
-		 * label.setText("&Server:");
-		 * 
 		 * Text systemName = new Text(container, SWT.BORDER | SWT.SINGLE);
 		 * systemName.setEditable(true);
 		 * 
@@ -56,10 +56,9 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		 * systemName.setLayoutData(gd);
 		 */
 
-		table = new Table(container, SWT.SINGLE | SWT.BORDER);
-		
-		
-		//table.setItemCount(100);
+		table = new Table(container, SWT.CHECK | SWT.SINGLE | SWT.BORDER);
+
+		// table.setItemCount(100);
 
 		/*
 		 * table.addListener(SWT.SetData, new Listener() { public void
@@ -71,12 +70,19 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		table.setLayoutData(gd);
 
+		statusLabel = new Label(container, SWT.NULL);
+
+		statusLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_RED));
+
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		statusLabel.setLayoutData(gd);
+
 		setControl(container);
 
 	}
 
 	private void lookupDestinations() {
-		
+
 		table.removeAll();
 
 		Thread currentThread = Thread.currentThread();
@@ -84,12 +90,11 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 		try {
 
-			//String port = system.getPortNumber();
-			//String serverName = system.getServerName();
-			
-			String port = "9199";
-			String serverName = "localhost";
+			String port = system.getPortNumber();
+			String serverName = system.getServerName();
 
+			// String port = "9199";
+			// String serverName = "localhost";
 
 			IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
 			String configPath = ps.getString(VendorPreferenceConstants.P_PATH);
@@ -113,33 +118,29 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 			jndiContext = new InitialContext(properties);
 
-			
 			NamingEnumeration<NameClassPair> queueList = jndiContext.list("/queue");
 			while (queueList.hasMore()) {
 				NameClassPair nc = queueList.next();
-				System.out.println(nc.getName());
-				nc.getClassName();
-				
-				TableItem item = new TableItem (table, SWT.NONE);
-				item.setText ("/queue/" + nc.getName());
+
+				TableItem item = new TableItem(table, SWT.NONE);
+				item.setText("/queue/" + nc.getName());
 			}
-			
+
 			NamingEnumeration<NameClassPair> topicList = jndiContext.list("/topic");
 			while (topicList.hasMore()) {
 				NameClassPair nc = topicList.next();
 				System.out.println(nc.getName());
 				nc.getClassName();
-				
-				TableItem item = new TableItem (table, SWT.NONE);
-				item.setText ("/topic/" + nc.getName());
-			}
-			
-			
 
+				TableItem item = new TableItem(table, SWT.NONE);
+				item.setText("/topic/" + nc.getName());
+			}
+
+			setErrorMessage(null);
 		} catch (NamingException e) {
-			e.printStackTrace();
+			// statusLabel.setText("Unable to get destinations from server");
+			setErrorMessage("Unable to get destinations from server");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -164,14 +165,15 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 	@Override
 	public void updateEndPointSystem() {
-		system.getEndpoints().add(new Endpoint("Name1"));
-		system.getEndpoints().add(new Endpoint("Name2"));
-		system.getEndpoints().add(new Endpoint("Name3"));
-		system.getEndpoints().add(new Endpoint("Name4"));
-		system.getEndpoints().add(new Endpoint("Name5"));
-		system.getEndpoints().add(new Endpoint("Name6"));
-		system.getEndpoints().add(new Endpoint("Name7"));
+		Collection<Endpoint> endpoints = system.getEndpoints();
 
+		TableItem[] items = table.getItems();
+		for (TableItem tableItem : items) {
+
+			if (tableItem.getChecked()) {
+				Endpoint ep = new Endpoint(tableItem.getText());
+				endpoints.add(ep);
+			}
+		}
 	}
-
 }
