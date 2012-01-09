@@ -94,7 +94,7 @@ public class EndpointManager {
 
 					EndpointSystem es = new EndpointSystem();
 
-					endpointSystems.add(es);
+					getEndpointSystems().add(es);
 
 					Collection<Endpoint> eps = es.getEndpoints();
 
@@ -180,7 +180,7 @@ public class EndpointManager {
 
 	private void saveEndpointSystems(XMLMemento memento) {
 
-		for (EndpointSystem system : endpointSystems) {
+		for (EndpointSystem system : getEndpointSystems()) {
 
 			IMemento endpointSystemMemento = memento.createChild(ENDPOINTSYSTEM_ELEMENT);
 
@@ -221,6 +221,10 @@ public class EndpointManager {
 	}
 
 	public void addEndpointSystem(EndpointSystem system) {
-		endpointSystems.add(system);
+		getEndpointSystems().add(system);
 	}
+
+	public Collection<EndpointSystem> getEndpointSystems() {
+		return endpointSystems;
+	}	
 }

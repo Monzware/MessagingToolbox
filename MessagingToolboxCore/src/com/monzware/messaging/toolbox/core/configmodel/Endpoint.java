@@ -31,4 +31,16 @@ public class Endpoint {
 		this.id = id;
 	}
 
+	public EndpointSender getEndpointSender() {
+		return new EndpointSender() {
+
+			@Override
+			public void sendMessage(String message) {
+				System.out.println("Send message " + message);
+
+			}
+		};
+
+	}
+
 }
