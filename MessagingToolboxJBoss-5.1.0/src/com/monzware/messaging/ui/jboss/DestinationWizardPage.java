@@ -171,7 +171,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		for (TableItem tableItem : items) {
 
 			if (tableItem.getChecked()) {
-				Endpoint ep = new Endpoint(tableItem.getText());
+				Endpoint ep = new Endpoint(system, tableItem.getText());
 				endpoints.add(ep);
 			}
 		}

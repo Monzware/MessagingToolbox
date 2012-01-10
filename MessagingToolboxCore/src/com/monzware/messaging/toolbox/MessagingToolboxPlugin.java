@@ -8,7 +8,7 @@ import org.eclipse.ui.menus.IMenuService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import com.monzware.messaging.menucontribution.SendToContributionFactory;
+import com.monzware.messaging.toolbox.menucontribution.SendToContributionFactory;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -30,7 +30,6 @@ public class MessagingToolboxPlugin extends AbstractUIPlugin {
 	 */
 	public MessagingToolboxPlugin() {
 
-		System.out.println("Activated");
 	}
 
 	/*
@@ -46,7 +45,6 @@ public class MessagingToolboxPlugin extends AbstractUIPlugin {
 		plugin = this;
 
 		addPopupMenuContribution();
-
 	}
 
 	public void addPopupMenuContribution() {

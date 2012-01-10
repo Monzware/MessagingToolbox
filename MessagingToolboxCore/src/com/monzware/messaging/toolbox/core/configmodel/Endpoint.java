@@ -10,7 +10,10 @@ public class Endpoint {
 	private String name;
 	private String id;
 
-	public Endpoint(String name) {
+	private final EndpointSystem es;
+
+	public Endpoint(EndpointSystem es, String name) {
+		this.es = es;
 		this.name = name;
 		id = "" + System.currentTimeMillis();
 	}
@@ -41,6 +44,14 @@ public class Endpoint {
 			}
 		};
 
+	}
+	
+	public String toString() {
+		return getName();
+	}
+
+	public EndpointSystem getEndpointsystem() {
+		return es;
 	}
 
 }

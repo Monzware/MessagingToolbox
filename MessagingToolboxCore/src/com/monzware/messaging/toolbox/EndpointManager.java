@@ -114,7 +114,7 @@ public class EndpointManager {
 						String epName = eMemento.getString(ENDPOINTNAME_ELEMENT);
 						String ipId = eMemento.getString(ENDPOINTID_ELEMENT);
 
-						Endpoint ep = new Endpoint(epName);
+						Endpoint ep = new Endpoint(es, epName);
 						ep.setId(ipId);
 
 						eps.add(ep);

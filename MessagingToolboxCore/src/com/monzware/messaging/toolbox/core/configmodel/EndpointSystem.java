@@ -66,4 +66,8 @@ public class EndpointSystem {
 	public void setVendorId(String vendorId) {
 		this.vendorId = vendorId;
 	}
+	
+	public String toString() {
+		return getSystemName();
+	}
 }

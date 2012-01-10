@@ -1,4 +1,4 @@
-package com.monzware.messaging.menucontribution;
+package com.monzware.messaging.toolbox.menucontribution;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.ui.menus.AbstractContributionFactory;

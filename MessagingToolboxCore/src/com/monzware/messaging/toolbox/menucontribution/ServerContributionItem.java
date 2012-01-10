@@ -1,4 +1,4 @@
-package com.monzware.messaging.menucontribution;
+package com.monzware.messaging.toolbox.menucontribution;
 
 import java.util.ArrayList;
 import java.util.Collection;
