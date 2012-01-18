@@ -11,11 +11,11 @@ import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
 import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointImpl;
 import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
 
-public class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+public class EndpointTreeViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
 	private final EndpointTreeView endpointTreeView;
 
-	public ViewContentProvider(EndpointTreeView endpointTreeView) {
+	public EndpointTreeViewContentProvider(EndpointTreeView endpointTreeView) {
 		this.endpointTreeView = endpointTreeView;
 	}
 
