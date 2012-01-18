@@ -46,7 +46,7 @@ public class EndpointTreeView extends ViewPart {
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
 
-		int ops = DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE |  DND.DROP_DEFAULT;
+		int ops = DND.DROP_COPY | DND.DROP_MOVE;
 		Transfer[] transfers = new Transfer[] { FileTransfer.getInstance(), TextTransfer.getInstance() };
 		viewer.addDropSupport(ops, transfers, new EndpointDropAdapter(viewer));
 

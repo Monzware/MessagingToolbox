@@ -1,9 +1,7 @@
 package com.monzware.messaging.toolbox.core.popup.actions;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -17,6 +15,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSender;
+import com.monzware.messaging.toolbox.util.InputStreamToStringConverter;
 
 public class SendToEndpointAction extends Action {
 
@@ -44,8 +43,8 @@ public class SendToEndpointAction extends Action {
 				if (endpointSender != null) {
 
 					InputStream contents = iFile.getContents();
-					String message = convertStreamToString(contents);					
-					endpointSender.sendMessage(message);
+					InputStreamToStringConverter conv = new InputStreamToStringConverter(contents);
+					endpointSender.sendMessage(conv.getString());
 				}
 
 			} catch (CoreException e) {
@@ -56,16 +55,4 @@ public class SendToEndpointAction extends Action {
 		}
 
 	}
-
-	public String convertStreamToString(InputStream is) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		is.close();
-		return sb.toString();
-	}
-
 }

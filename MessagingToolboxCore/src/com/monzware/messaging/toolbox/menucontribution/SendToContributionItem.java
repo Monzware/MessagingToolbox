@@ -26,7 +26,6 @@ public class SendToContributionItem extends CompoundContributionItem {
 			public void menuAboutToShow(IMenuManager manager) {
 
 				menuDynamic.add(getServersMenus());
-
 			}
 
 			private IContributionItem getServersMenus() {
