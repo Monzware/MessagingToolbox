@@ -23,7 +23,8 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointImpl;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
 
 /**
  * A working set manager stores working sets and provides property change
@@ -54,7 +55,7 @@ public class EndpointManager {
 
 	private boolean savePending;
 
-	private Collection<EndpointSystem> endpointSystems = new ArrayList<EndpointSystem>();
+	private Collection<EndpointSystemImpl> endpointSystems = new ArrayList<EndpointSystemImpl>();
 
 	public EndpointManager(BundleContext context) {
 
@@ -92,7 +93,7 @@ public class EndpointManager {
 
 				for (IMemento esMemento : memento.getChildren(ENDPOINTSYSTEM_ELEMENT)) {
 
-					EndpointSystem es = new EndpointSystem();
+					EndpointSystemImpl es = new EndpointSystemImpl();
 
 					getEndpointSystems().add(es);
 
@@ -114,7 +115,7 @@ public class EndpointManager {
 						String epName = eMemento.getString(ENDPOINTNAME_ELEMENT);
 						String ipId = eMemento.getString(ENDPOINTID_ELEMENT);
 
-						Endpoint ep = new Endpoint(es, epName);
+						EndpointImpl ep = new EndpointImpl(es, epName);
 						ep.setId(ipId);
 
 						eps.add(ep);
@@ -180,7 +181,7 @@ public class EndpointManager {
 
 	private void saveEndpointSystems(XMLMemento memento) {
 
-		for (EndpointSystem system : getEndpointSystems()) {
+		for (EndpointSystemImpl system : getEndpointSystems()) {
 
 			IMemento endpointSystemMemento = memento.createChild(ENDPOINTSYSTEM_ELEMENT);
 
@@ -220,11 +221,11 @@ public class EndpointManager {
 		StatusManager.getManager().handle(sa, StatusManager.LOG);
 	}
 
-	public void addEndpointSystem(EndpointSystem system) {
+	public void addEndpointSystem(EndpointSystemImpl system) {
 		getEndpointSystems().add(system);
 	}
 
-	public Collection<EndpointSystem> getEndpointSystems() {
+	public Collection<EndpointSystemImpl> getEndpointSystems() {
 		return endpointSystems;
 	}	
 }

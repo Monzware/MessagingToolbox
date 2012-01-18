@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -23,9 +22,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
-import com.monzware.messaging.toolbox.core.wizards.intf.MessagingSystemWizardExtention;
+import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
 import com.monzware.messaging.toolbox.jboss.Activator;
 import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
 
@@ -165,14 +163,16 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 	@Override
 	public void updateEndPointSystem() {
-		Collection<Endpoint> endpoints = system.getEndpoints();
+		// Collection<EndpointImpl> endpoints = system.getEndpoints();
 
 		TableItem[] items = table.getItems();
 		for (TableItem tableItem : items) {
 
 			if (tableItem.getChecked()) {
-				Endpoint ep = new Endpoint(system, tableItem.getText());
-				endpoints.add(ep);
+				// EndpointImpl ep = new EndpointImpl(system,
+				// tableItem.getText());
+				system.addEndpoint(tableItem.getText());
+				// endpoints.add(ep);
 			}
 		}
 	}

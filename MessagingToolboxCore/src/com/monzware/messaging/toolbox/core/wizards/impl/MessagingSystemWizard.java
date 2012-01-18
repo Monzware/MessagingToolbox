@@ -1,4 +1,4 @@
-package com.monzware.messaging.toolbox.core.wizards;
+package com.monzware.messaging.toolbox.core.wizards.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +18,16 @@ import org.osgi.framework.Bundle;
 
 import com.monzware.messaging.toolbox.EndpointManager;
 import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
 import com.monzware.messaging.toolbox.core.model.VendorConfiguration;
-import com.monzware.messaging.toolbox.core.wizards.intf.MessagingSystemWizardExtention;
+import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
 import com.monzware.messaging.toolbox.vendor.VendorFacade;
 
 public class MessagingSystemWizard extends Wizard implements INewWizard {
 
 	private List<VendorConfiguration> vendorConfigurations = new ArrayList<VendorConfiguration>();
 
-	private EndpointSystem system = new EndpointSystem();
+	private EndpointSystemImpl system = new EndpointSystemImpl();
 
 	private MessagingSystemWizardPage page = new MessagingSystemWizardPage(vendorConfigurations, system);
 

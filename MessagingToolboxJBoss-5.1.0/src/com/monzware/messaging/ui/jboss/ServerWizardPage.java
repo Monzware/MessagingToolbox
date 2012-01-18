@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
-import com.monzware.messaging.toolbox.core.wizards.intf.MessagingSystemWizardExtention;
+import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
 import com.monzware.messaging.toolbox.jboss.Activator;
 import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
 
@@ -54,7 +54,7 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 		serverName = new Text(container, SWT.BORDER | SWT.SINGLE);
 		serverName.setEditable(true);
 		serverName.setText(defaultServer);
-		
+
 		system.setServerName(defaultServer);
 		system.setPortNumber(defaultPort);
 

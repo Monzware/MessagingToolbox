@@ -10,8 +10,8 @@ import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
 
-import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSender;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointImpl;
 import com.monzware.messaging.toolbox.util.InputStreamToStringConverter;
 
 public class EndpointDropAdapter extends ViewerDropAdapter {
@@ -29,15 +29,15 @@ public class EndpointDropAdapter extends ViewerDropAdapter {
 		DropTargetEvent event = getCurrentEvent();
 		int location = determineLocation(event);
 
-		return target instanceof Endpoint && location == LOCATION_ON;
+		return target instanceof EndpointImpl && location == LOCATION_ON;
 	}
 
 	@Override
 	public boolean performDrop(Object data) {
 
 		Object target = getCurrentTarget();
-		if (target instanceof Endpoint) {
-			Endpoint endpoint = (Endpoint) target;
+		if (target instanceof EndpointImpl) {
+			EndpointImpl endpoint = (EndpointImpl) target;
 
 			if (data instanceof String) {
 				String dataString = (String) data;
@@ -51,7 +51,7 @@ public class EndpointDropAdapter extends ViewerDropAdapter {
 		return false;
 	}
 
-	private boolean addFileToEndpoint(String[] files, Endpoint endpoint) {
+	private boolean addFileToEndpoint(String[] files, EndpointImpl endpoint) {
 		boolean result = false;
 
 		for (String string : files) {
@@ -75,7 +75,7 @@ public class EndpointDropAdapter extends ViewerDropAdapter {
 		return result;
 	}
 
-	private boolean addStringToEndpoint(String dataString, Endpoint endpoint) {
+	private boolean addStringToEndpoint(String dataString, EndpointImpl endpoint) {
 		EndpointSender sender = endpoint.getEndpointSender();
 		if (sender != null) {
 			sender.sendMessage(dataString);

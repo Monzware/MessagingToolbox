@@ -12,7 +12,7 @@
       </category>
       <wizard
             category="com.monzware.messaging.toolbox.core"
-            class="com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizard"
+            class="com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard"
             icon="icons/sample.gif"
             id="com.monzware.messaging.toolbox.core.wizards.ServerWizard.SampleNewWizard"
             name="Messaging Server configuration">

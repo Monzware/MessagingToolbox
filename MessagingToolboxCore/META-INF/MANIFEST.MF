@@ -11,10 +11,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.core.expressions;bundle-version="3.4.300"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: com.monzware.messaging.toolbox.core.configmodel,
- com.monzware.messaging.toolbox.core.model,
- com.monzware.messaging.toolbox.core.wizards.intf,
- com.monzware.messaging.toolbox.vendor;uses:="javax.naming"
 Bundle-ClassPath: .
 Bundle-ActivationPolicy: lazy
+Export-Package: com.monzware.messaging.toolbox.core.configmodel,
+ com.monzware.messaging.toolbox.core.wizards,
+ com.monzware.messaging.toolbox.vendor
 

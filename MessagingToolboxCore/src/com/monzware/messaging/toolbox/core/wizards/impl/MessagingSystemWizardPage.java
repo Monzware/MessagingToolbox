@@ -1,4 +1,4 @@
-package com.monzware.messaging.toolbox.core.wizards;
+package com.monzware.messaging.toolbox.core.wizards.impl;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
 import com.monzware.messaging.toolbox.core.model.VendorConfiguration;
 
 public class MessagingSystemWizardPage extends WizardPage {
@@ -20,9 +20,9 @@ public class MessagingSystemWizardPage extends WizardPage {
 	private Text systemName;
 	private Combo type;
 	private final List<VendorConfiguration> vendorConfigurations;
-	private final EndpointSystem system;
+	private final EndpointSystemImpl system;
 
-	public MessagingSystemWizardPage(List<VendorConfiguration> vendorConfigurations, EndpointSystem system) {
+	public MessagingSystemWizardPage(List<VendorConfiguration> vendorConfigurations, EndpointSystemImpl system) {
 		super("Messaging system");
 		this.vendorConfigurations = vendorConfigurations;
 		this.system = system;

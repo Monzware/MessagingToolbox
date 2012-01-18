@@ -7,15 +7,15 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
 import com.monzware.messaging.toolbox.core.popup.actions.SendToEndpointAction;
 
 public class EndpointsystemMenulistener implements IMenuListener {
 
 	private final MenuManager endPointMenuManager;
-	private final EndpointSystem endpointSystem;
+	private final EndpointSystemImpl endpointSystem;
 
-	public EndpointsystemMenulistener(MenuManager endPointMenuManager, EndpointSystem endpointSystem) {
+	public EndpointsystemMenulistener(MenuManager endPointMenuManager, EndpointSystemImpl endpointSystem) {
 		this.endPointMenuManager = endPointMenuManager;
 		this.endpointSystem = endpointSystem;
 	}

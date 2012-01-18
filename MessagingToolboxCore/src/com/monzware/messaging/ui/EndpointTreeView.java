@@ -19,7 +19,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
-import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizard;
+import com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard;
 
 public class EndpointTreeView extends ViewPart {
 

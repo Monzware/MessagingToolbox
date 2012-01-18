@@ -8,8 +8,8 @@ import org.eclipse.jface.viewers.Viewer;
 
 import com.monzware.messaging.toolbox.EndpointManager;
 import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
-import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointImpl;
+import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
 
 public class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
@@ -29,7 +29,7 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
 		if (parent.equals(endpointTreeView.getViewSite())) {
 
 			EndpointManager endpointManager = MessagingToolboxPlugin.getDefault().getEndpointManager();
-			Collection<EndpointSystem> endpointSystems = endpointManager.getEndpointSystems();
+			Collection<EndpointSystemImpl> endpointSystems = endpointManager.getEndpointSystems();
 			return endpointSystems.toArray();
 
 		}
@@ -38,8 +38,8 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
 
 	public Object getParent(Object child) {
 
-		if (child instanceof Endpoint) {
-			Endpoint ep = (Endpoint) child;
+		if (child instanceof EndpointImpl) {
+			EndpointImpl ep = (EndpointImpl) child;
 			return ep.getEndpointsystem();
 		}
 
@@ -48,8 +48,8 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
 
 	public Object[] getChildren(Object parent) {
 
-		if (parent instanceof EndpointSystem) {
-			EndpointSystem eps = (EndpointSystem) parent;
+		if (parent instanceof EndpointSystemImpl) {
+			EndpointSystemImpl eps = (EndpointSystemImpl) parent;
 			return eps.getEndpoints().toArray();
 		}
 
@@ -58,8 +58,8 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
 
 	public boolean hasChildren(Object parent) {
 
-		if (parent instanceof EndpointSystem) {
-			EndpointSystem eps = (EndpointSystem) parent;
+		if (parent instanceof EndpointSystemImpl) {
+			EndpointSystemImpl eps = (EndpointSystemImpl) parent;
 			return !eps.getEndpoints().isEmpty();
 		}
 		return false;
