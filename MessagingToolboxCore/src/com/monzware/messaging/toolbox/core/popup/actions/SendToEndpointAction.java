@@ -21,9 +21,14 @@ public class SendToEndpointAction extends Action {
 
 	private final Endpoint endpoint;
 
+	// private ImageDescriptor imageDescriptor =
+	// MessagingToolboxPlugin.getImageDescriptor("/icons/database2.png");
+
 	public SendToEndpointAction(Endpoint endpoint) {
 		super(endpoint.getName());
 		this.endpoint = endpoint;
+
+		// setImageDescriptor(imageDescriptor);
 	}
 
 	@Override
