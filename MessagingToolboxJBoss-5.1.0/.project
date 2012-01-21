@@ -3,6 +3,7 @@
 	<name>MessagingToolboxJBoss-5.1.0</name>
 	<comment></comment>
 	<projects>
+		<project>MessagingToolboxCore</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

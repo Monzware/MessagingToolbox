@@ -2,8 +2,6 @@ package com.monzware.messaging.ui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -28,7 +26,6 @@ public class EndpointTreeView extends ViewPart {
 	private Action editServerAction;
 	private Action removeServerAction;
 	private TreeViewer viewer;
-	private DrillDownAdapter drillDownAdapter;
 
 	public EndpointTreeView() {
 		// TODO Auto-generated constructor stub
@@ -40,7 +37,7 @@ public class EndpointTreeView extends ViewPart {
 		shell = parent.getShell();
 
 		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
-		drillDownAdapter = new DrillDownAdapter(viewer);
+		new DrillDownAdapter(viewer);
 		viewer.setContentProvider(new EndpointTreeViewContentProvider(this));
 		viewer.setLabelProvider(new EndpointViewLabelProvider());
 		viewer.setSorter(new NameSorter());
@@ -111,8 +108,9 @@ public class EndpointTreeView extends ViewPart {
 
 		removeServerAction = new Action() {
 			public void run() {
-				ISelection selection = viewer.getSelection();
-				Object obj = ((IStructuredSelection) selection).getFirstElement();
+				// ISelection selection = viewer.getSelection();
+				// Object obj = ((IStructuredSelection)
+				// selection).getFirstElement();
 
 			}
 		};

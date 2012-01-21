@@ -11,7 +11,7 @@ import org.eclipse.ui.actions.CompoundContributionItem;
 
 import com.monzware.messaging.toolbox.EndpointManager;
 import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
-import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 
 public final class ServerContributionItem extends CompoundContributionItem {
 	public ServerContributionItem() {
@@ -24,15 +24,15 @@ public final class ServerContributionItem extends CompoundContributionItem {
 
 		EndpointManager endpointManager = MessagingToolboxPlugin.getDefault().getEndpointManager();
 
-		Collection<EndpointSystemImpl> endpointSystems = endpointManager.getEndpointSystems();
-		for (EndpointSystemImpl endpointSystem : endpointSystems) {
+		Collection<EndpointSystem> endpointSystems = endpointManager.getEndpointSystems();
+		for (EndpointSystem endpointSystem : endpointSystems) {
 			toReturn.add(getEndPointMenuManagerFromEndpointsystem(endpointSystem));
 		}
 
 		return (IContributionItem[]) toReturn.toArray(new IContributionItem[toReturn.size()]);
 	}
 
-	private MenuManager getEndPointMenuManagerFromEndpointsystem(EndpointSystemImpl endpointSystem) {
+	private MenuManager getEndPointMenuManagerFromEndpointsystem(EndpointSystem endpointSystem) {
 		final MenuManager endPointMenuManager = new MenuManager(endpointSystem.getSystemName(), null);
 		endPointMenuManager.setRemoveAllWhenShown(true);
 		IMenuListener menuDynamicListener = new EndpointsystemMenulistener(endPointMenuManager, endpointSystem);

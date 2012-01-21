@@ -3,7 +3,7 @@
 <schema targetNamespace="com.monzware.messaging.toolbox.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.monzware.messaging.toolbox.core" id="com.monzware.messaging.vendor" name="Messaging Vendor Extension"/>
+         <meta.schema plugin="com.monzware.messaging.toolbox.core" id="com.monzware.messaging.providers" name="Messaging providers"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,8 +18,9 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="facade"/>
             <element ref="configurationwizardpage" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="configurationpersitence"/>
+            <element ref="objectfactory"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -48,7 +49,7 @@
       </complexType>
    </element>
 
-   <element name="facade">
+   <element name="configurationwizardpage">
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
@@ -56,7 +57,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":com.monzware.messaging.toolbox.vendor.VendorFacade"/>
+                  <meta.attribute kind="java" basedOn=":com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -70,7 +71,7 @@
       </complexType>
    </element>
 
-   <element name="configurationwizardpage">
+   <element name="configurationpersitence">
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
@@ -78,15 +79,23 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.jface.wizard.WizardPage:"/>
+                  <meta.attribute kind="java" basedOn=":com.monzware.messaging.toolbox.providers.ConfigurationPersistance"/>
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+      </complexType>
+   </element>
+
+   <element name="objectfactory">
+      <complexType>
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":com.monzware.messaging.toolbox.providers.ObjectFactory"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>

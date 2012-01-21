@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="com.monzware.messaging.vendor" name="Messaging Vendor Extension" schema="schema/com.monzware.messaging.vendor.exsd"/>
-   <extension-point id="com.monzware.messaging.monitor" name="Message monitor" schema="schema/com.monzware.messaging.monitor.exsd"/>
-   
-   <extension
+   <extension-point id="com.monzware.messaging.providers" name="providers" schema="schema/providers.exsd"/>
+
+<extension
          point="org.eclipse.ui.newWizards">
       <category
             id="com.monzware.messaging.toolbox.core"
@@ -41,5 +40,5 @@
             name="Messaging Toolbox">
       </page>
    </extension>
-
+   
 </plugin>

@@ -3,7 +3,6 @@ package com.monzware.messaging.toolbox.core.wizards.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -14,22 +13,17 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.osgi.framework.Bundle;
 
 import com.monzware.messaging.toolbox.EndpointManager;
 import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
-import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
-import com.monzware.messaging.toolbox.core.model.VendorConfiguration;
+import com.monzware.messaging.toolbox.core.model.ProviderConfiguration;
 import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
-import com.monzware.messaging.toolbox.vendor.VendorFacade;
 
 public class MessagingSystemWizard extends Wizard implements INewWizard {
 
-	private List<VendorConfiguration> vendorConfigurations = new ArrayList<VendorConfiguration>();
+	private List<ProviderConfiguration> providerConfigurations = new ArrayList<ProviderConfiguration>();
 
-	private EndpointSystemImpl system = new EndpointSystemImpl();
-
-	private MessagingSystemWizardPage page = new MessagingSystemWizardPage(vendorConfigurations, system);
+	private MessagingSystemWizardStartPage startPage = null;
 
 	/**
 	 * Constructor for SampleNewWizard.
@@ -42,76 +36,38 @@ public class MessagingSystemWizard extends Wizard implements INewWizard {
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 
-		IExtensionPoint point = registry.getExtensionPoint("com.monzware.messaging.vendor");
+		IExtensionPoint providersExtensionPoint = registry.getExtensionPoint("com.monzware.messaging.providers");
 
-		if (point == null)
+		if (providersExtensionPoint == null)
 			return;
-		IExtension[] extensions = point.getExtensions();
+		IExtension[] extensions = providersExtensionPoint.getExtensions();
 
-		for (IExtension iExtension : extensions) {
+		for (IExtension providerExtension : extensions) {
 
 			try {
 
-				VendorConfiguration vc = new VendorConfiguration();
-				vendorConfigurations.add(vc);
+				ProviderConfiguration pc = new ProviderConfiguration(providerExtension, this);
+				providerConfigurations.add(pc);
 
-				String pluginName = iExtension.getContributor().getName();
-				Bundle bundle = Platform.getBundle(pluginName);
-
-				IConfigurationElement[] configurationElements = iExtension.getConfigurationElements();
-				for (IConfigurationElement iConfigurationElement : configurationElements) {
-
-					if (iConfigurationElement.getName().equals("facade")) {
-
-						String vendorName = iConfigurationElement.getAttribute("name");
-						String facadeClass = iConfigurationElement.getAttribute("class");
-
-						Class<?> loadClass = bundle.loadClass(facadeClass);
-						VendorFacade facade = (VendorFacade) loadClass.newInstance();
-
-						vc.setSystemName(vendorName);
-						vc.setSystemId(pluginName);
-						vc.setFacade(facade);
-
-					} else if (iConfigurationElement.getName().equals("configurationwizardpage")) {
-
-						String systemName = iConfigurationElement.getAttribute("name");
-						String pageClass = iConfigurationElement.getAttribute("class");
-
-						Class<?> loadClass = bundle.loadClass(pageClass);
-
-						WizardPage page = (WizardPage) loadClass.newInstance();
-						page.setWizard(this);
-						page.setTitle(systemName);
-
-						if (page instanceof MessagingSystemWizardExtention) {
-							MessagingSystemWizardExtention extPage = (MessagingSystemWizardExtention) page;
-							extPage.setEndpointSystem(system);
-						}
-
-						vc.addConfigurationWizardPage(page);
-
-					}
-
-				}
 			} catch (Exception e) {
 				System.out.println("Error " + e);
 			}
-
 		}
+
+		startPage = new MessagingSystemWizardStartPage(providerConfigurations);
 	}
 
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-		VendorConfiguration vendorConfiguration = this.page.getVendorConfiguration();
+		ProviderConfiguration providerConfiguration = startPage.getProviderConfiguration();
 
-		List<WizardPage> pages = vendorConfiguration.getPages();
+		List<WizardPage> pages = providerConfiguration.getProviderWizardPages();
 
 		if (pages.isEmpty()) {
 			return null;
 		}
 
-		if (page == this.page) {
+		if (page == startPage) {
 			WizardPage wizardPage = pages.get(0);
 			return wizardPage;
 		}
@@ -125,7 +81,6 @@ public class MessagingSystemWizard extends Wizard implements INewWizard {
 			} else if (wizardPage == page) {
 				return pages.get(i + 1);
 			}
-
 		}
 
 		return null;
@@ -136,7 +91,7 @@ public class MessagingSystemWizard extends Wizard implements INewWizard {
 	 */
 
 	public void addPages() {
-		addPage(page);
+		addPage(startPage);
 		super.addPages();
 	}
 
@@ -146,11 +101,11 @@ public class MessagingSystemWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
 
-		page.updateEndPointSystem();
+		startPage.updateEndPointSystem();
 
-		VendorConfiguration vendorConfiguration = page.getVendorConfiguration();
+		ProviderConfiguration providerConfiguration = startPage.getProviderConfiguration();
 
-		List<WizardPage> pages = vendorConfiguration.getPages();
+		List<WizardPage> pages = providerConfiguration.getProviderWizardPages();
 		for (WizardPage wizardPage : pages) {
 			if (wizardPage instanceof MessagingSystemWizardExtention) {
 				MessagingSystemWizardExtention extPage = (MessagingSystemWizardExtention) wizardPage;
@@ -159,7 +114,7 @@ public class MessagingSystemWizard extends Wizard implements INewWizard {
 		}
 
 		EndpointManager endpointManager = MessagingToolboxPlugin.getDefault().getEndpointManager();
-		endpointManager.addEndpointSystem(system);
+		endpointManager.addEndpointSystem(providerConfiguration.getEndpointSystem());
 		endpointManager.saveState();
 
 		return true;

@@ -1,19 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse Messaging Toolbox Core
+Bundle-Name: MessagingToolboxCore
 Bundle-SymbolicName: com.monzware.messaging.toolbox.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.monzware.messaging.toolbox.MessagingToolboxPlugin
 Bundle-Vendor: Monzware
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.core.resources,
- org.eclipse.ui.ide,
- org.eclipse.core.expressions;bundle-version="3.4.300"
+ org.eclipse.core.expressions;bundle-version="3.4.300",
+ org.eclipse.core.resources;bundle-version="3.7.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: .
 Bundle-ActivationPolicy: lazy
 Export-Package: com.monzware.messaging.toolbox.core.configmodel,
  com.monzware.messaging.toolbox.core.wizards,
- com.monzware.messaging.toolbox.vendor
-
+ com.monzware.messaging.toolbox.providers

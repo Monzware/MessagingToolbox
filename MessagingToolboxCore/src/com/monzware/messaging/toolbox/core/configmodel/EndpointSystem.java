@@ -1,17 +1,21 @@
 package com.monzware.messaging.toolbox.core.configmodel;
 
+import java.util.Collection;
+
 public interface EndpointSystem {
 
 	public boolean isActive();
 
-	public void addEndpoint(String text);
+	public Collection<? extends Endpoint> getEndpoints();
 
-	public void setServerName(String defaultServer);
+	public String getSystemName();
 
-	public String getServerName();
+	public void setSystemName(String text);
 
-	public String getPortNumber();
+	// public void setProviderName(String systemName);
 
-	public void setPortNumber(String defaultPort);
+	// public void setProviderId(String providerId);
+
+	public String getProviderId();
 
 }

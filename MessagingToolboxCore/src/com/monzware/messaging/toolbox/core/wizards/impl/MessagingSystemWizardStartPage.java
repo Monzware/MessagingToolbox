@@ -12,20 +12,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
-import com.monzware.messaging.toolbox.core.model.VendorConfiguration;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.model.ProviderConfiguration;
 
-public class MessagingSystemWizardPage extends WizardPage {
+public class MessagingSystemWizardStartPage extends WizardPage {
 
 	private Text systemName;
 	private Combo type;
-	private final List<VendorConfiguration> vendorConfigurations;
-	private final EndpointSystemImpl system;
+	private final List<ProviderConfiguration> providerConfigurations;
 
-	public MessagingSystemWizardPage(List<VendorConfiguration> vendorConfigurations, EndpointSystemImpl system) {
+	public MessagingSystemWizardStartPage(List<ProviderConfiguration> providerConfigurations) {
 		super("Messaging system");
-		this.vendorConfigurations = vendorConfigurations;
-		this.system = system;
+		this.providerConfigurations = providerConfigurations;
 
 		setTitle("Define Messaging system");
 		setDescription("Configure a Messaging system");
@@ -69,27 +67,23 @@ public class MessagingSystemWizardPage extends WizardPage {
 
 	private void initialize() {
 
-		for (VendorConfiguration vc : vendorConfigurations) {
-			type.add(vc.toString());
+		for (ProviderConfiguration pc : providerConfigurations) {
+			type.add(pc.toString());
 		}
 
 		type.select(0);
 	}
 
-	public VendorConfiguration getVendorConfiguration() {
+	public ProviderConfiguration getProviderConfiguration() {
 		int selectionIndex = type.getSelectionIndex();
-		return vendorConfigurations.get(selectionIndex);
+		return providerConfigurations.get(selectionIndex);
 	}
 
 	public void updateEndPointSystem() {
-
-		int index = type.getSelectionIndex();
-		VendorConfiguration vc = vendorConfigurations.get(index);
-
-		system.setSystemName(systemName.getText());		
 		
-		system.setVendorId(vc.getSystemId());
-		system.setVendorName(vc.getSystemName());
+		ProviderConfiguration vc = getProviderConfiguration();
+		EndpointSystem endpointSystem = vc.getEndpointSystem();
+		endpointSystem.setSystemName(systemName.getText());
 
 	}
 }

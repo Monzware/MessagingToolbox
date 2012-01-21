@@ -15,13 +15,14 @@ import org.eclipse.swt.widgets.Text;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
 import com.monzware.messaging.toolbox.jboss.Activator;
+import com.monzware.messaging.toolbox.jboss510.JBossEndpointSystemImpl;
 import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
 
 public class ServerWizardPage extends WizardPage implements MessagingSystemWizardExtention {
 
 	private Text serverName;
 	private Text port;
-	private EndpointSystem system;
+	private JBossEndpointSystemImpl system;
 
 	public ServerWizardPage() {
 		this("Test");
@@ -62,8 +63,8 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 			public void modifyText(ModifyEvent e) {
 				system.setServerName(serverName.getText());
 			}
-		});
-
+		});		
+		
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		serverName.setLayoutData(gd);
 
@@ -86,7 +87,7 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 
 	@Override
 	public void setEndpointSystem(EndpointSystem system) {
-		this.system = system;
+		this.system = (JBossEndpointSystemImpl) system;
 	}
 
 	@Override

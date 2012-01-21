@@ -10,8 +10,12 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkingSetManager;
@@ -20,11 +24,12 @@ import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.statushandlers.IStatusAdapterConstants;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
-import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointImpl;
-import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.PersistenceConstants;
+import com.monzware.messaging.toolbox.providers.ConfigurationPersistance;
 
 /**
  * A working set manager stores working sets and provides property change
@@ -36,18 +41,6 @@ import com.monzware.messaging.toolbox.core.configmodel.impl.EndpointSystemImpl;
  */
 public class EndpointManager {
 
-	private static final String ENDPOINTS_ELEMENT = "Endpoints";
-	private static final String VENDOR_NAME_ELEMENT = "VendorName";
-	private static final String VENDOR_PLUGINID_ELEMENT = "VendorPluginId";
-	private static final String SERVERPORT_ELEMENT = "Port";
-	private static final String SERVERNAME_ELEMENT = "ServerName";
-	private static final String SYSTEMNAME_ELEMENT = "Name";
-	private static final String SYSTEMID_ELEMENT = "ID";
-	private static final String ENDPOINTNAME_ELEMENT = "Name";
-	private static final String ENDPOINTID_ELEMENT = "Id";
-	private static final String ENDPOINT_ELEMENT = "Endpoint";
-	private static final String ENDPOINTSYSTEM_ELEMENT = "Endpointsystem";
-
 	// Working set persistence
 	public static final String WORKING_SET_STATE_FILENAME = "endpointconfiguration.xml"; //$NON-NLS-1$
 
@@ -55,7 +48,7 @@ public class EndpointManager {
 
 	private boolean savePending;
 
-	private Collection<EndpointSystemImpl> endpointSystems = new ArrayList<EndpointSystemImpl>();
+	private Collection<EndpointSystem> endpointSystems = new ArrayList<EndpointSystem>();
 
 	public EndpointManager(BundleContext context) {
 
@@ -91,37 +84,15 @@ public class EndpointManager {
 
 				IMemento memento = XMLMemento.createReadRoot(reader);
 
-				for (IMemento esMemento : memento.getChildren(ENDPOINTSYSTEM_ELEMENT)) {
+				for (IMemento esMemento : memento.getChildren(PersistenceConstants.ENDPOINTSYSTEM_ELEMENT)) {
 
-					EndpointSystemImpl es = new EndpointSystemImpl();
+					String pluginId = esMemento.getString(PersistenceConstants.PROVIDER_PLUGINID_ELEMENT);
+					String systemName = esMemento.getString(PersistenceConstants.SYSTEMNAME_ELEMENT);
 
+					ConfigurationPersistance cp = getConfigurationPersitence(pluginId);
+
+					EndpointSystem es = cp.getEndpointSystemFromConfiguration(pluginId, systemName, esMemento);
 					getEndpointSystems().add(es);
-
-					Collection<Endpoint> eps = es.getEndpoints();
-
-					es.setSystemId(esMemento.getString(SYSTEMID_ELEMENT));
-					es.setSystemName(esMemento.getString(SYSTEMNAME_ELEMENT));
-
-					es.setServerName(esMemento.getString(SERVERNAME_ELEMENT));
-					es.setPortNumber(esMemento.getString(SERVERPORT_ELEMENT));
-
-					es.setVendorId(esMemento.getString(VENDOR_PLUGINID_ELEMENT));
-					es.setVendorName(esMemento.getString(VENDOR_NAME_ELEMENT));
-
-					IMemento endpoint = esMemento.getChild(ENDPOINTS_ELEMENT);
-
-					for (IMemento eMemento : endpoint.getChildren(ENDPOINT_ELEMENT)) {
-
-						String epName = eMemento.getString(ENDPOINTNAME_ELEMENT);
-						String ipId = eMemento.getString(ENDPOINTID_ELEMENT);
-
-						EndpointImpl ep = new EndpointImpl(es, epName);
-						ep.setId(ipId);
-
-						eps.add(ep);
-
-					}
-
 				}
 
 				reader.close();
@@ -181,34 +152,13 @@ public class EndpointManager {
 
 	private void saveEndpointSystems(XMLMemento memento) {
 
-		for (EndpointSystemImpl system : getEndpointSystems()) {
+		for (EndpointSystem system : getEndpointSystems()) {
 
-			IMemento endpointSystemMemento = memento.createChild(ENDPOINTSYSTEM_ELEMENT);
+			IMemento endpointSystemMemento = memento.createChild(PersistenceConstants.ENDPOINTSYSTEM_ELEMENT);
 
-			endpointSystemMemento.putString(SYSTEMID_ELEMENT, system.getSystemId());
-			endpointSystemMemento.putString(SYSTEMNAME_ELEMENT, system.getSystemName());
-
-			endpointSystemMemento.putString(SERVERNAME_ELEMENT, system.getServerName());
-			endpointSystemMemento.putString(SERVERPORT_ELEMENT, system.getPortNumber());
-
-			endpointSystemMemento.putString(VENDOR_PLUGINID_ELEMENT, system.getVendorId());
-			endpointSystemMemento.putString(VENDOR_NAME_ELEMENT, system.getVendorName());
-
-			Collection<Endpoint> endpoints = system.getEndpoints();
-
-			IMemento endpointsMementoChild = endpointSystemMemento.createChild(ENDPOINTS_ELEMENT);
-
-			for (Endpoint endpoint : endpoints) {
-
-				IMemento endpointMementoChild = endpointsMementoChild.createChild(ENDPOINT_ELEMENT);
-
-				endpointMementoChild.putString(ENDPOINTNAME_ELEMENT, endpoint.getName());
-				endpointMementoChild.putString(ENDPOINTID_ELEMENT, endpoint.getId());
-
-			}
-
+			ConfigurationPersistance cp = getConfigurationPersitence(system.getProviderId());
+			cp.addEndpointSystemToConfiguration(system, endpointSystemMemento);
 		}
-
 	}
 
 	/**
@@ -221,11 +171,46 @@ public class EndpointManager {
 		StatusManager.getManager().handle(sa, StatusManager.LOG);
 	}
 
-	public void addEndpointSystem(EndpointSystemImpl system) {
+	public void addEndpointSystem(EndpointSystem system) {
 		getEndpointSystems().add(system);
 	}
 
-	public Collection<EndpointSystemImpl> getEndpointSystems() {
+	public Collection<EndpointSystem> getEndpointSystems() {
 		return endpointSystems;
-	}	
+	}
+
+	private ConfigurationPersistance getConfigurationPersitence(String pluginId) {
+
+		try {
+			IExtensionRegistry registry = Platform.getExtensionRegistry();
+
+			IExtension extension = registry.getExtension("com.monzware.messaging.providers", pluginId);
+
+			if (extension != null) {
+
+				String pluginName = extension.getContributor().getName();
+				Bundle bundle = Platform.getBundle(pluginName);
+
+				for (IConfigurationElement iConfigurationElement : extension.getConfigurationElements()) {
+
+					if (iConfigurationElement.getName().equals("configurationpersitence")) {
+
+						String clazz = iConfigurationElement.getAttribute("class");
+						Class<?> loadClass = bundle.loadClass(clazz);
+
+						return (ConfigurationPersistance) loadClass.newInstance();
+					}
+				}
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 }

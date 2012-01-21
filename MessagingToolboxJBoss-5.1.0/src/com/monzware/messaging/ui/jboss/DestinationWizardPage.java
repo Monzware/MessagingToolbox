@@ -25,11 +25,13 @@ import org.eclipse.swt.widgets.TableItem;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
 import com.monzware.messaging.toolbox.jboss.Activator;
+import com.monzware.messaging.toolbox.jboss510.JBossEndpointImpl;
+import com.monzware.messaging.toolbox.jboss510.JBossEndpointSystemImpl;
 import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
 
 public class DestinationWizardPage extends WizardPage implements MessagingSystemWizardExtention {
 
-	private EndpointSystem system;
+	private JBossEndpointSystemImpl system;
 	private Table table;
 	private Label statusLabel;
 
@@ -86,14 +88,12 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		Thread currentThread = Thread.currentThread();
 		ClassLoader oldCL = currentThread.getContextClassLoader();
 
+		String port = system.getPortNumber();
+		String serverName = system.getServerName();
+
+		String url = "jnp://" + serverName + ":" + port;
+
 		try {
-
-			String port = system.getPortNumber();
-			String serverName = system.getServerName();
-
-			// String port = "9199";
-			// String serverName = "localhost";
-
 			IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
 			String configPath = ps.getString(VendorPreferenceConstants.P_PATH);
 
@@ -110,11 +110,9 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 			properties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
 			properties.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
 
-			properties.put(Context.PROVIDER_URL, "jnp://" + serverName + ":" + port);
+			properties.put(Context.PROVIDER_URL, url);
 
-			InitialContext jndiContext;
-
-			jndiContext = new InitialContext(properties);
+			InitialContext jndiContext = new InitialContext(properties);
 
 			NamingEnumeration<NameClassPair> queueList = jndiContext.list("/queue");
 			while (queueList.hasMore()) {
@@ -137,7 +135,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 			setErrorMessage(null);
 		} catch (NamingException e) {
 			// statusLabel.setText("Unable to get destinations from server");
-			setErrorMessage("Unable to get destinations from server");
+			setErrorMessage("Unable to get destinations from server: " + url);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -157,22 +155,22 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 	@Override
 	public void setEndpointSystem(EndpointSystem system) {
-		this.system = system;
+		this.system = (JBossEndpointSystemImpl) system;
 
 	}
 
 	@Override
 	public void updateEndPointSystem() {
-		// Collection<EndpointImpl> endpoints = system.getEndpoints();
 
-		TableItem[] items = table.getItems();
-		for (TableItem tableItem : items) {
+		if (table != null) {
 
-			if (tableItem.getChecked()) {
-				// EndpointImpl ep = new EndpointImpl(system,
-				// tableItem.getText());
-				system.addEndpoint(tableItem.getText());
-				// endpoints.add(ep);
+			TableItem[] items = table.getItems();
+			for (TableItem tableItem : items) {
+
+				if (tableItem.getChecked()) {
+					JBossEndpointImpl ep = new JBossEndpointImpl(system, tableItem.getText());
+					system.add(ep);
+				}
 			}
 		}
 	}
