@@ -17,6 +17,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
+import com.monzware.messaging.toolbox.EndpointManager;
+import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointsystemChangeListener;
 import com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard;
 
 public class EndpointTreeView extends ViewPart {
@@ -49,6 +53,20 @@ public class EndpointTreeView extends ViewPart {
 
 		makeActions();
 		contributeToActionBars();
+
+		EndpointManager endpointManager = MessagingToolboxPlugin.getDefault().getEndpointManager();
+		endpointManager.addEndpointsystemChangeListener(new EndpointsystemChangeListener() {
+
+			@Override
+			public void endPointAdded(EndpointSystem system) {
+				viewer.refresh();
+			}
+
+			@Override
+			public void endPointDeleted(EndpointSystem system) {
+				viewer.refresh();
+			}
+		});
 
 	}
 

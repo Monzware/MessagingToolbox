@@ -28,6 +28,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointsystemChangeListener;
 import com.monzware.messaging.toolbox.core.configmodel.PersistenceConstants;
 import com.monzware.messaging.toolbox.providers.ConfigurationPersistance;
 
@@ -49,6 +50,8 @@ public class EndpointManager {
 	private boolean savePending;
 
 	private Collection<EndpointSystem> endpointSystems = new ArrayList<EndpointSystem>();
+
+	private Collection<EndpointsystemChangeListener> endpointsystemChangeListeners = new ArrayList<EndpointsystemChangeListener>();
 
 	public EndpointManager(BundleContext context) {
 
@@ -173,6 +176,18 @@ public class EndpointManager {
 
 	public void addEndpointSystem(EndpointSystem system) {
 		getEndpointSystems().add(system);
+
+		for (EndpointsystemChangeListener l : endpointsystemChangeListeners) {
+			l.endPointAdded(system);
+		}
+	}
+
+	public void deleteEndpointSystem(EndpointSystem system) {
+		getEndpointSystems().remove(system);
+
+		for (EndpointsystemChangeListener l : endpointsystemChangeListeners) {
+			l.endPointDeleted(system);
+		}
 	}
 
 	public Collection<EndpointSystem> getEndpointSystems() {
@@ -212,5 +227,9 @@ public class EndpointManager {
 		}
 		return null;
 
+	}
+
+	public void addEndpointsystemChangeListener(EndpointsystemChangeListener endpointsystemChangeListener) {
+		endpointsystemChangeListeners.add(endpointsystemChangeListener);
 	}
 }
