@@ -15,10 +15,14 @@ import javax.naming.NamingException;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -33,7 +37,8 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 	private JBossEndpointSystemImpl system;
 	private Table table;
-	private Label statusLabel;
+
+	// private Label statusLabel;
 
 	public DestinationWizardPage() {
 		super("Destinations");
@@ -70,15 +75,26 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		table.setLayoutData(gd);
 
-		statusLabel = new Label(container, SWT.NULL);
+		Image image = new Image(container.getDisplay(), getClass().getResourceAsStream("/icons/refresh.gif"));
 
-		statusLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_RED));
+		Button button = new Button(container, SWT.PUSH);
+		button.setImage(image);
 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		statusLabel.setLayoutData(gd);
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+
+				BusyIndicator.showWhile(e.display, new Runnable() {
+
+					@Override
+					public void run() {
+						lookupDestinations();
+					}
+				});
+
+			}
+		});
 
 		setControl(container);
-
 	}
 
 	private void lookupDestinations() {

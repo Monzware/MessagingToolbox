@@ -14,7 +14,7 @@
             class="com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard"
             icon="icons/sample.gif"
             id="com.monzware.messaging.toolbox.core.wizards.ServerWizard.SampleNewWizard"
-            name="Messaging Server configuration">
+            name="Messaging system">
       </wizard>
    </extension>
    <extension
