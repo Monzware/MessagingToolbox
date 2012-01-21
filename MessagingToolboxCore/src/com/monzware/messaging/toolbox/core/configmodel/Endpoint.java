@@ -6,7 +6,7 @@ public interface Endpoint {
 
 	EndpointReceiver getEndpointReceiver();
 
-	String getName();	
+	String getName();
 
 	EndpointSystem getEndpointsystem();
 

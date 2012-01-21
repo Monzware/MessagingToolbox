@@ -36,8 +36,6 @@ public class AmazonSQSEndpointSystemImpl implements EndpointSystem {
 		return false;
 	}
 
-	
-
 	@Override
 	public Collection<? extends Endpoint> getEndpoints() {
 		return eps;
@@ -46,7 +44,7 @@ public class AmazonSQSEndpointSystemImpl implements EndpointSystem {
 	@Override
 	public String getSystemName() {
 		return systemName;
-	}	
+	}
 
 	public String toString() {
 		return getSystemName();

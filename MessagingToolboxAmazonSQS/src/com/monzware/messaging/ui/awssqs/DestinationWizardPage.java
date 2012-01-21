@@ -74,7 +74,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		table.removeAll();
 
 		AmazonSQS sqs = new AmazonSQSClient(new BasicAWSCredentials(system.getAccessKeyID(), system.getSecretAccessKey()));
-		
+
 		try {
 			for (String queueUrl : sqs.listQueues().getQueueUrls()) {
 

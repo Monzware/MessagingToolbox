@@ -69,7 +69,7 @@ public class VenderConfigurationWizardPage extends WizardPage {
 	private void openPreferences() {
 
 		Shell shell = parent.getShell();
-		
+
 		PreferenceManager mgr = new PreferenceManager();
 
 		// IPreferenceNode node = new PreferenceNode("1", page);

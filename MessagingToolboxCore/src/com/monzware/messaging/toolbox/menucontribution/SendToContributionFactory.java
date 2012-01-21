@@ -14,8 +14,7 @@ public class SendToContributionFactory extends AbstractContributionFactory {
 	public void createContributionItems(final IServiceLocator serviceLocator, IContributionRoot additions) {
 
 		IContributionItem item = new SendToContributionItem();
-		
-				
-		additions.addContributionItem(item, new IFileOnlyExpression()  );
+
+		additions.addContributionItem(item, new IFileOnlyExpression());
 	}
 }

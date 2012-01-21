@@ -80,7 +80,7 @@ public class MessagingSystemWizardStartPage extends WizardPage {
 	}
 
 	public void updateEndPointSystem() {
-		
+
 		ProviderConfiguration vc = getProviderConfiguration();
 		EndpointSystem endpointSystem = vc.getEndpointSystem();
 		endpointSystem.setSystemName(systemName.getText());

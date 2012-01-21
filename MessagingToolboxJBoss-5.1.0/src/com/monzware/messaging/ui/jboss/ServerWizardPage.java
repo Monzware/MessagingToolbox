@@ -63,8 +63,8 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 			public void modifyText(ModifyEvent e) {
 				system.setServerName(serverName.getText());
 			}
-		});		
-		
+		});
+
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		serverName.setLayoutData(gd);
 
