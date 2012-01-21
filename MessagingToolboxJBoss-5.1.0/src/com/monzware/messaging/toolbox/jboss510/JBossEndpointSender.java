@@ -1,9 +1,6 @@
 package com.monzware.messaging.toolbox.jboss510;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Properties;
 
 import javax.jms.Connection;
@@ -17,11 +14,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSender;
-import com.monzware.messaging.toolbox.jboss.Activator;
-import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
+import com.monzware.messaging.toolbox.jboss510.classloader.JBossClientClassLoaderManager;
 
 public class JBossEndpointSender implements EndpointSender {
 
@@ -43,14 +37,7 @@ public class JBossEndpointSender implements EndpointSender {
 		ClassLoader oldCL = currentThread.getContextClassLoader();
 
 		try {
-			IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
-			String configPath = ps.getString(VendorPreferenceConstants.P_PATH);
-
-			File file = new File(configPath + "\\client\\jbossall-client.jar");
-
-			URL[] urls = new URL[1];
-			urls[0] = file.toURI().toURL();
-			URLClassLoader urlClassLoader = new URLClassLoader(urls, oldCL);
+			ClassLoader urlClassLoader = JBossClientClassLoaderManager.getClassLoader(oldCL);
 
 			currentThread.setContextClassLoader(urlClassLoader);
 
@@ -72,6 +59,10 @@ public class JBossEndpointSender implements EndpointSender {
 
 			MessageProducer producer = session.createProducer(dest);
 			producer.send(textMessage);
+
+			producer.close();
+			session.close();
+			connection.close();
 
 		} catch (NamingException e) {
 			e.printStackTrace();

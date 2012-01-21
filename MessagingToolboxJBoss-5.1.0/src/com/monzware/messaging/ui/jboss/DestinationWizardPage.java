@@ -1,9 +1,6 @@
 package com.monzware.messaging.ui.jboss;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -12,7 +9,6 @@ import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -28,10 +24,9 @@ import org.eclipse.swt.widgets.TableItem;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
-import com.monzware.messaging.toolbox.jboss.Activator;
 import com.monzware.messaging.toolbox.jboss510.JBossEndpointImpl;
 import com.monzware.messaging.toolbox.jboss510.JBossEndpointSystemImpl;
-import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
+import com.monzware.messaging.toolbox.jboss510.classloader.JBossClientClassLoaderManager;
 
 public class DestinationWizardPage extends WizardPage implements MessagingSystemWizardExtention {
 
@@ -56,24 +51,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 		endpointImage = new Image(container.getDisplay(), getClass().getResourceAsStream("/icons/endpoint.png"));
 
-		/*
-		 * Text systemName = new Text(container, SWT.BORDER | SWT.SINGLE);
-		 * systemName.setEditable(true);
-		 * 
-		 * GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		 * systemName.setLayoutData(gd);
-		 */
-
 		table = new Table(container, SWT.CHECK | SWT.SINGLE | SWT.BORDER);
-
-		// table.setItemCount(100);
-
-		/*
-		 * table.addListener(SWT.SetData, new Listener() { public void
-		 * handleEvent(Event event) { TableItem item = (TableItem) event.item;
-		 * int index = table.indexOf(item); item.setText("Item " + index);
-		 * System.out.println(item.getText()); } });
-		 */
 
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		table.setLayoutData(gd);
@@ -113,15 +91,8 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		String url = "jnp://" + serverName + ":" + port;
 
 		try {
-			IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
-			String configPath = ps.getString(VendorPreferenceConstants.P_PATH);
 
-			File file = new File(configPath + "\\client\\jbossall-client.jar");
-			System.out.println("Exist: " + file.exists());
-
-			URL[] urls = new URL[1];
-			urls[0] = file.toURI().toURL();
-			URLClassLoader urlClassLoader = new URLClassLoader(urls, oldCL);
+			ClassLoader urlClassLoader = JBossClientClassLoaderManager.getClassLoader(oldCL);
 
 			currentThread.setContextClassLoader(urlClassLoader);
 
