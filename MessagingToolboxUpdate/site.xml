@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201201210152.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201201210152">
+   <description name="Updatesite for MessagingToolbox" url="http://monzware.github.com/MessagingToolbox/MessagingToolboxUpdate/">
+      This the update site for the MessagingToolbox Eclipse plugin
+   </description>
+   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201201211404.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201201211404">
       <category name="com.monzware.messaging.toolbox.category.impl"/>
    </feature>
-   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201201210152.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201201210152">
+   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201201211404.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201201211404">
       <category name="com.monzware.messaging.toolbox.category.jboss"/>
    </feature>
    <category-def name="com.monzware.messaging.toolbox.category.impl" label="Core">
