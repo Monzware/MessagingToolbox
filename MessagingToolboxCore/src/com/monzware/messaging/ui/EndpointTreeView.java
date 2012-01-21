@@ -2,6 +2,8 @@ package com.monzware.messaging.ui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -126,9 +128,13 @@ public class EndpointTreeView extends ViewPart {
 
 		removeServerAction = new Action() {
 			public void run() {
-				// ISelection selection = viewer.getSelection();
-				// Object obj = ((IStructuredSelection)
-				// selection).getFirstElement();
+				ISelection selection = viewer.getSelection();
+				Object obj = ((IStructuredSelection) selection).getFirstElement();
+				if (obj instanceof EndpointSystem) {
+					EndpointSystem eps = (EndpointSystem) obj;
+					MessagingToolboxPlugin.getDefault().getEndpointManager().deleteEndpointSystem(eps);
+					MessagingToolboxPlugin.getDefault().getEndpointManager().saveState();
+				}
 
 			}
 		};
