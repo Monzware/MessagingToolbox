@@ -37,6 +37,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 	private JBossEndpointSystemImpl system;
 	private Table table;
+	private Image endpointImage;
 
 	// private Label statusLabel;
 
@@ -52,6 +53,8 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		container.setLayout(layout);
 		layout.numColumns = 1;
 		layout.verticalSpacing = 9;
+
+		endpointImage = new Image(container.getDisplay(), getClass().getResourceAsStream("/icons/endpoint.png"));
 
 		/*
 		 * Text systemName = new Text(container, SWT.BORDER | SWT.SINGLE);
@@ -136,6 +139,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 				TableItem item = new TableItem(table, SWT.NONE);
 				item.setText("/queue/" + nc.getName());
+				item.setImage(endpointImage);
 			}
 
 			NamingEnumeration<NameClassPair> topicList = jndiContext.list("/topic");

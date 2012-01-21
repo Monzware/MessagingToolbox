@@ -12,7 +12,7 @@
       <wizard
             category="com.monzware.messaging.toolbox.core"
             class="com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard"
-            icon="icons/sample.gif"
+            icon="icons/databases.png"
             id="com.monzware.messaging.toolbox.core.wizards.ServerWizard.SampleNewWizard"
             name="Messaging system">
       </wizard>
@@ -22,6 +22,7 @@
       <view
             category="com.monzware.messaging.toolbox.view.category"
             class="com.monzware.messaging.ui.EndpointTreeView"
+            icon="icons/database2.png"
             id="MessagingToolboxCore.EndpointTreeView"
             name="Endpoint view"
             restorable="true">

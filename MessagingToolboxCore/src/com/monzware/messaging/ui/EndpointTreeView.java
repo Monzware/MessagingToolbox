@@ -45,7 +45,7 @@ public class EndpointTreeView extends ViewPart {
 		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		new DrillDownAdapter(viewer);
 		viewer.setContentProvider(new EndpointTreeViewContentProvider(this));
-		viewer.setLabelProvider(new EndpointViewLabelProvider());
+		viewer.setLabelProvider(new EndpointViewLabelProvider(parent.getDisplay()));
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
 
