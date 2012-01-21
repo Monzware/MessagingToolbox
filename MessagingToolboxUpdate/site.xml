@@ -3,20 +3,28 @@
    <description name="The MessagingToolbox Updates" url="http://monzware.github.com/MessagingToolbox/MessagingToolboxUpdate">
       This is the update site for the MessagingToolbox Eclipse plugin
    </description>
-   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201201211445.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201201211445">
-      <category name="com.monzware.messaging.toolbox.category"/>
+   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201201212215.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201201212215">
+      <category name="com.monzware.messaging.toolbox.category.core"/>
    </feature>
-   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201201211445.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201201211445">
+   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201201212215.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201201212215">
       <category name="com.monzware.messaging.toolbox.category.jboss"/>
    </feature>
-   <category-def name="com.monzware.messaging.toolbox.category" label="Core">
+   <feature url="features/com.monzware.messaging.toolbox.awssqs.feature_1.0.0.201201212215.jar" id="com.monzware.messaging.toolbox.awssqs.feature" version="1.0.0.201201212215">
+      <category name="com.monzware.messaging.toolbox.category.providers"/>
+   </feature>
+   <category-def name="com.monzware.messaging.toolbox.category.core" label="MessagingToolbox">
       <description>
-         Core functionality
+         Core MessagingToolbox functionality
       </description>
    </category-def>
-   <category-def name="com.monzware.messaging.toolbox.category.jboss" label="JBoss">
+   <category-def name="com.monzware.messaging.toolbox.category.jboss" label="MessagingToolbox - JBoss Message Providers">
       <description>
-         JBoss specific imlementation plugins
+         JBoss specific message providers
+      </description>
+   </category-def>
+   <category-def name="com.monzware.messaging.toolbox.category.providers" label="MessagingToolbox - Message providers">
+      <description>
+         Messaging providerds
       </description>
    </category-def>
 </site>
