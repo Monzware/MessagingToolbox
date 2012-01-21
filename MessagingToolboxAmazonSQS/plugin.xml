@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.monzware.messaging.ui.preferences.MessagingToolboxPreferences"
+            class="com.monzware.messaging.ui.preferences.awssqs.VendorPreferences"
+            id="com.monzware.messaging.ui.preferences.awssqs.VendorPreferences"
+            name="Amazon SQS Configuration">
+      </page>
+   </extension>
+      
+   <extension
+         id="com.monzware.messaging.toolbox.awssqs"
+         name="Amazon SQS"
+         point="com.monzware.messaging.providers">      
+      <configurationwizardpage
+            class="com.monzware.messaging.ui.awssqs.AccessCredentialsWizardPage"
+            name="Amazon Access Credentials">
+      </configurationwizardpage>
+      <configurationwizardpage
+            class="com.monzware.messaging.ui.awssqs.DestinationWizardPage"
+            name="Destinations">
+      </configurationwizardpage>
+      <configurationpersitence
+            class="com.monzware.messaging.toolbox.awssqs.ConfigurationPersistanceImpl">
+      </configurationpersitence>
+      <objectfactory
+            class="com.monzware.messaging.toolbox.awssqs.ObjectFactory">
+      </objectfactory>
+   </extension>
+
+</plugin>

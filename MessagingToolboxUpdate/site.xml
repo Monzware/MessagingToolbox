@@ -4,19 +4,27 @@
       This is the update site for the MessagingToolbox Eclipse plugin
    </description>
    <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201201211445.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201201211445">
-      <category name="com.monzware.messaging.toolbox.category"/>
+      <category name="com.monzware.messaging.toolbox.category.core"/>
    </feature>
    <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201201211445.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201201211445">
       <category name="com.monzware.messaging.toolbox.category.jboss"/>
    </feature>
-   <category-def name="com.monzware.messaging.toolbox.category" label="Core">
+   <feature url="features/com.monzware.messaging.toolbox.awssqs.feature_1.0.0.qualifier.jar" id="com.monzware.messaging.toolbox.awssqs.feature" version="1.0.0.qualifier">
+      <category name="com.monzware.messaging.toolbox.category.providers"/>
+   </feature>
+   <category-def name="com.monzware.messaging.toolbox.category.core" label="Core">
       <description>
          Core functionality
       </description>
    </category-def>
-   <category-def name="com.monzware.messaging.toolbox.category.jboss" label="JBoss">
+   <category-def name="com.monzware.messaging.toolbox.category.jboss" label="JBoss message providers">
       <description>
          JBoss specific imlementation plugins
+      </description>
+   </category-def>
+   <category-def name="com.monzware.messaging.toolbox.category.providers" label="Messaging system providers">
+      <description>
+         Messaging system providers
       </description>
    </category-def>
 </site>
