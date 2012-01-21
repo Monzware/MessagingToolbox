@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201201082035.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201201082035">
+   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201201210152.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201201210152">
       <category name="com.monzware.messaging.toolbox.category.impl"/>
    </feature>
-   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201201082035.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201201082035">
-      <category name="com.monzware.messaging.toolbox.category.jboss"/>
-   </feature>
-   <feature url="features/com.monzware.messaging.toolbox.jboss600.feature_1.0.0.201201082035.jar" id="com.monzware.messaging.toolbox.jboss600.feature" version="1.0.0.201201082035">
-      <category name="com.monzware.messaging.toolbox.category.jboss"/>
-   </feature>
-   <feature url="features/com.monzware.messaging.toolbox.jboss700.feature_1.0.0.201201082035.jar" id="com.monzware.messaging.toolbox.jboss700.feature" version="1.0.0.201201082035">
+   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201201210152.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201201210152">
       <category name="com.monzware.messaging.toolbox.category.jboss"/>
    </feature>
    <category-def name="com.monzware.messaging.toolbox.category.impl" label="Core">
