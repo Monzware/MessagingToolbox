@@ -12,9 +12,11 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSender;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointSenderException;
 import com.monzware.messaging.toolbox.jboss510.classloader.JBossClientClassLoaderManager;
 
 public class JBossEndpointSender implements EndpointSender {
@@ -31,7 +33,7 @@ public class JBossEndpointSender implements EndpointSender {
 	}
 
 	@Override
-	public void sendMessage(String message) {
+	public void sendMessage(String message) throws EndpointSenderException {
 
 		Thread currentThread = Thread.currentThread();
 		ClassLoader oldCL = currentThread.getContextClassLoader();
@@ -64,16 +66,17 @@ public class JBossEndpointSender implements EndpointSender {
 			session.close();
 			connection.close();
 
-		} catch (NamingException e) {
-			e.printStackTrace();
+		} catch (NameNotFoundException e) {			
+			throw new EndpointSenderException(e.getMessage());
+		} catch (NamingException e) {			
+			throw new EndpointSenderException(e.getRootCause().getMessage());
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			throw new EndpointSenderException("MalformedURLException");
 		} catch (JMSException e) {
-			e.printStackTrace();
+			throw new EndpointSenderException("JMSException");
+		} finally {
+			currentThread.setContextClassLoader(oldCL);
 		}
-
-		currentThread.setContextClassLoader(oldCL);
-
 	}
 
 }

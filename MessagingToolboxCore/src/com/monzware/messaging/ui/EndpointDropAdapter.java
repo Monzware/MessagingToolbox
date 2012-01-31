@@ -1,26 +1,28 @@
 package com.monzware.messaging.ui;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.TransferData;
 
+import com.monzware.messaging.job.SendMessageFromFileJob;
+import com.monzware.messaging.job.SendMessageJob;
+import com.monzware.messaging.job.SendMessageJobChangeListener;
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSender;
-import com.monzware.messaging.toolbox.util.InputStreamToStringConverter;
 
 public class EndpointDropAdapter extends ViewerDropAdapter {
 
-	// private final TreeViewer viewer;
+	private TreeViewer viewer;
 
 	public EndpointDropAdapter(TreeViewer viewer) {
 		super(viewer);
-		// this.viewer = viewer;
+		this.viewer = viewer;
 	}
 
 	@Override
@@ -45,43 +47,46 @@ public class EndpointDropAdapter extends ViewerDropAdapter {
 
 			} else if (data instanceof String[]) {
 				String[] files = (String[]) data;
-				return addFileToEndpoint(files, endpoint);
+				return addFilesToEndpoint(files, endpoint);
 			}
 		}
 		return false;
 	}
 
-	private boolean addFileToEndpoint(String[] files, Endpoint endpoint) {
+	private boolean addFilesToEndpoint(String[] files, Endpoint endpoint) {
 		boolean result = false;
+
+		IJobManager jm = Job.getJobManager();
+		IProgressMonitor pg = jm.createProgressGroup();
+		pg.setTaskName("Add files content to endpoint");
 
 		for (String string : files) {
 			File file = new File(string);
 			if (file.exists()) {
 
-				try {
-					FileInputStream is = new FileInputStream(file);
-					InputStreamToStringConverter conv = new InputStreamToStringConverter(is);
-					boolean addStringToEndpoint = addStringToEndpoint(conv.getString(), endpoint);
-					if (addStringToEndpoint) {
-						result = true;
-					}
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				SendMessageFromFileJob job = new SendMessageFromFileJob(endpoint, file);
+				IJobChangeListener listener = new SendMessageJobChangeListener(viewer.getControl().getShell());
+				job.addJobChangeListener(listener);
+				job.setUser(true);
+				job.setPriority(SendMessageJob.SHORT);
+				job.schedule();
+				job.setProgressGroup(pg, IProgressMonitor.UNKNOWN);
+
+				result = true;
 			}
 		}
 		return result;
 	}
 
 	private boolean addStringToEndpoint(String dataString, Endpoint endpoint) {
-		EndpointSender sender = endpoint.getEndpointSender();
-		if (sender != null) {
-			sender.sendMessage(dataString);
-			return true;
-		}
-		return false;
-	}
 
+		SendMessageJob job = new SendMessageJob(endpoint, dataString);
+		IJobChangeListener listener = new SendMessageJobChangeListener(viewer.getControl().getShell());
+		job.addJobChangeListener(listener);
+		job.setUser(true);
+		job.setPriority(SendMessageJob.SHORT);
+		job.schedule();
+
+		return true;
+	}
 }
