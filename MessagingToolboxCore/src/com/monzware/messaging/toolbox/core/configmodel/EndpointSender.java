@@ -4,5 +4,4 @@ public interface EndpointSender {
 
 	public void sendMessage(String message) throws EndpointSenderException;
 
-	
 }

@@ -66,9 +66,9 @@ public class JBossEndpointSender implements EndpointSender {
 			session.close();
 			connection.close();
 
-		} catch (NameNotFoundException e) {			
+		} catch (NameNotFoundException e) {
 			throw new EndpointSenderException(e.getMessage());
-		} catch (NamingException e) {			
+		} catch (NamingException e) {
 			throw new EndpointSenderException(e.getRootCause().getMessage());
 		} catch (MalformedURLException e) {
 			throw new EndpointSenderException("MalformedURLException");

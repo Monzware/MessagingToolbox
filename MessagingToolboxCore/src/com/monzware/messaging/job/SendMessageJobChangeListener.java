@@ -7,7 +7,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-
 public class SendMessageJobChangeListener extends JobChangeAdapter {
 
 	private final Shell shell;

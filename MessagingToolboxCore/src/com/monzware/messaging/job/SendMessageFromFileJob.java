@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSender;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSenderException;
@@ -60,5 +61,9 @@ public class SendMessageFromFileJob extends Job implements EndpointJob {
 
 	public String getEndpointName() {
 		return endpoint.getName();
+	}
+
+	public boolean belongsTo(Object family) {
+		return (MessagingToolboxPlugin.PLUGIN_ID + "#JOB").equals(family);
 	}
 }

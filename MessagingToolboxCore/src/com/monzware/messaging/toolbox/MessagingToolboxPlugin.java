@@ -1,11 +1,14 @@
 package com.monzware.messaging.toolbox;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.menus.AbstractContributionFactory;
 import org.eclipse.ui.menus.IMenuService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.progress.IProgressService;
 import org.osgi.framework.BundleContext;
 
 import com.monzware.messaging.toolbox.menucontribution.SendToContributionFactory;
@@ -45,6 +48,11 @@ public class MessagingToolboxPlugin extends AbstractUIPlugin {
 		plugin = this;
 
 		addPopupMenuContribution();
+
+		ImageDescriptor myImage = ImageDescriptor.createFromURL(FileLocator.find(getDefault().getBundle(), new Path("/icons/database2.png"), null));
+
+		IProgressService progressService = PlatformUI.getWorkbench().getProgressService();
+		progressService.registerIconForFamily(myImage, MessagingToolboxPlugin.PLUGIN_ID + "#JOB");
 	}
 
 	public void addPopupMenuContribution() {
