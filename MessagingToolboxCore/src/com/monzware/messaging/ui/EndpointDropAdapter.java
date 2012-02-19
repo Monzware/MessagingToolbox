@@ -25,7 +25,6 @@ public class EndpointDropAdapter extends ViewerDropAdapter {
 		this.viewer = viewer;
 	}
 
-	@Override
 	public boolean validateDrop(Object target, int operation, TransferData transferType) {
 
 		DropTargetEvent event = getCurrentEvent();
@@ -34,7 +33,6 @@ public class EndpointDropAdapter extends ViewerDropAdapter {
 		return target instanceof Endpoint && location == LOCATION_ON;
 	}
 
-	@Override
 	public boolean performDrop(Object data) {
 
 		Object target = getCurrentTarget();

@@ -20,7 +20,6 @@ public class EndpointsystemMenulistener implements IMenuListener {
 		this.endpointSystem = endpointSystem;
 	}
 
-	@Override
 	public void menuAboutToShow(IMenuManager manager) {
 
 		Collection<? extends Endpoint> endpoints = endpointSystem.getEndpoints();

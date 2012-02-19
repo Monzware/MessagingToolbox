@@ -36,7 +36,6 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 		super(pageName, title, titleImage);
 	}
 
-	@Override
 	public void createControl(Composite parent) {
 
 		IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
@@ -85,12 +84,10 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 
 	}
 
-	@Override
 	public void setEndpointSystem(EndpointSystem system) {
 		this.system = (JBossEndpointSystemImpl) system;
 	}
 
-	@Override
 	public void updateEndPointSystem() {
 		system.setServerName(serverName.getText());
 		system.setPortNumber(port.getText());

@@ -29,7 +29,6 @@ public class SendMessageFromIFileJob extends Job implements EndpointJob {
 
 	}
 
-	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
 		EndpointSender sender = endpoint.getEndpointSender();

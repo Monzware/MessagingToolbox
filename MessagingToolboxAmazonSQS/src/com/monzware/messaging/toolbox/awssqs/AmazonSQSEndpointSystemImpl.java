@@ -31,17 +31,14 @@ public class AmazonSQSEndpointSystemImpl implements EndpointSystem {
 
 	}
 
-	@Override
 	public boolean isActive() {
 		return false;
 	}
 
-	@Override
 	public Collection<? extends Endpoint> getEndpoints() {
 		return eps;
 	}
 
-	@Override
 	public String getSystemName() {
 		return systemName;
 	}
@@ -50,13 +47,11 @@ public class AmazonSQSEndpointSystemImpl implements EndpointSystem {
 		return getSystemName();
 	}
 
-	@Override
 	public void setSystemName(String systemName) {
 		this.systemName = systemName;
 
 	}
 
-	@Override
 	public String getProviderId() {
 		return providerExtensionId;
 	}

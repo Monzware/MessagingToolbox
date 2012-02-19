@@ -21,7 +21,6 @@ public class SendMessageJob extends Job implements EndpointJob {
 		this.dataString = dataString;
 	}
 
-	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
 		EndpointSender sender = endpoint.getEndpointSender();

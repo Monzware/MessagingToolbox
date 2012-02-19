@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.CoreException;
 
 public class IFileOnlyExpression extends Expression {
 
-	@Override
 	public EvaluationResult evaluate(IEvaluationContext context) throws CoreException {
 
 		Object defaultVariable = context.getDefaultVariable();

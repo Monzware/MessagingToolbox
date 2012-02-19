@@ -37,7 +37,6 @@ public class EndpointTreeView extends ViewPart {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public void createPartControl(Composite parent) {
 
 		shell = parent.getShell();
@@ -59,12 +58,10 @@ public class EndpointTreeView extends ViewPart {
 		EndpointManager endpointManager = MessagingToolboxPlugin.getDefault().getEndpointManager();
 		endpointManager.addEndpointsystemChangeListener(new EndpointsystemChangeListener() {
 
-			@Override
 			public void endPointAdded(EndpointSystem system) {
 				viewer.refresh();
 			}
 
-			@Override
 			public void endPointDeleted(EndpointSystem system) {
 				viewer.refresh();
 			}
@@ -72,7 +69,6 @@ public class EndpointTreeView extends ViewPart {
 
 	}
 
-	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 

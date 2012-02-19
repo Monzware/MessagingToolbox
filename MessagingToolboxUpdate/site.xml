@@ -3,13 +3,13 @@
    <description name="The MessagingToolbox Updates" url="http://monzware.github.com/MessagingToolbox/MessagingToolboxUpdate">
       This is the update site for the MessagingToolbox Eclipse plugin
    </description>
-   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201202101637.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201202101637">
+   <feature url="features/com.monzware.messaging.toolbox.feature_1.0.0.201202192204.jar" id="com.monzware.messaging.toolbox.feature" version="1.0.0.201202192204">
       <category name="com.monzware.messaging.toolbox.category.core"/>
    </feature>
-   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201202101637.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201202101637">
+   <feature url="features/com.monzware.messaging.toolbox.jboss510.feature_1.0.0.201202192204.jar" id="com.monzware.messaging.toolbox.jboss510.feature" version="1.0.0.201202192204">
       <category name="com.monzware.messaging.toolbox.category.jboss"/>
    </feature>
-   <feature url="features/com.monzware.messaging.toolbox.awssqs.feature_1.0.0.201202101637.jar" id="com.monzware.messaging.toolbox.awssqs.feature" version="1.0.0.201202101637">
+   <feature url="features/com.monzware.messaging.toolbox.awssqs.feature_1.0.0.201202192204.jar" id="com.monzware.messaging.toolbox.awssqs.feature" version="1.0.0.201202192204">
       <category name="com.monzware.messaging.toolbox.category.providers"/>
    </feature>
    <category-def name="com.monzware.messaging.toolbox.category.core" label="MessagingToolbox">

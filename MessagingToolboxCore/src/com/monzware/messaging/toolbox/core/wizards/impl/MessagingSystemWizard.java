@@ -57,7 +57,6 @@ public class MessagingSystemWizard extends Wizard implements INewWizard {
 		startPage = new MessagingSystemWizardStartPage(providerConfigurations);
 	}
 
-	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		ProviderConfiguration providerConfiguration = startPage.getProviderConfiguration();
 
@@ -120,7 +119,6 @@ public class MessagingSystemWizard extends Wizard implements INewWizard {
 		return true;
 	}
 
-	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 
 	}

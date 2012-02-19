@@ -21,7 +21,6 @@ public class AmazonSQSEndpointSender implements EndpointSender {
 		secretAccessKey = es.getSecretAccessKey();
 	}
 
-	@Override
 	public void sendMessage(String message) throws EndpointSenderException {
 
 		try {

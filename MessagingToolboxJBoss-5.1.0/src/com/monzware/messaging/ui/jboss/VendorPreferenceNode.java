@@ -11,7 +11,6 @@ public class VendorPreferenceNode extends PreferenceNode implements IPreferenceN
 		super(id, new VendorPreferences());
 	}
 
-	@Override
 	public String getLabelText() {
 		return "JBoss 5.1.0 Configuration";
 	}

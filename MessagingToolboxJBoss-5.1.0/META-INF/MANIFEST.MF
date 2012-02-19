@@ -8,7 +8,7 @@ Bundle-Vendor: Monzware
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  com.monzware.messaging.toolbox.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/jboss-javaee.jar,
  .

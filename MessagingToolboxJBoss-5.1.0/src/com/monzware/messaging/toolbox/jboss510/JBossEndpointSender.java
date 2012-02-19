@@ -32,7 +32,6 @@ public class JBossEndpointSender implements EndpointSender {
 		url = "jnp://" + serverName + ":" + port;
 	}
 
-	@Override
 	public void sendMessage(String message) throws EndpointSenderException {
 
 		Thread currentThread = Thread.currentThread();

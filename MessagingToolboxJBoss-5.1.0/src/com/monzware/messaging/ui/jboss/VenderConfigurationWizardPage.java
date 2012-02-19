@@ -29,7 +29,6 @@ public class VenderConfigurationWizardPage extends WizardPage {
 		super("JBoss configuration");
 	}
 
-	@Override
 	public void createControl(Composite parent) {
 		this.parent = parent;
 

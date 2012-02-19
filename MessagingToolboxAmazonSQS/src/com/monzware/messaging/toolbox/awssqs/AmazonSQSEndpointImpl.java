@@ -15,17 +15,14 @@ public class AmazonSQSEndpointImpl implements Endpoint {
 		this.epName = epName;
 	}
 
-	@Override
 	public EndpointSender getEndpointSender() {
 		return new AmazonSQSEndpointSender(es, epName);
 	}
 
-	@Override
 	public EndpointReceiver getEndpointReceiver() {
 		return null;
 	}
 
-	@Override
 	public String getName() {
 		return epName;
 	}
@@ -34,7 +31,6 @@ public class AmazonSQSEndpointImpl implements Endpoint {
 		return getName();
 	}
 
-	@Override
 	public EndpointSystem getEndpointsystem() {
 		return es;
 	}

@@ -15,12 +15,10 @@ public class SendMessageJobChangeListener extends JobChangeAdapter {
 		this.shell = shell;
 	}
 
-	@Override
 	public void done(final IJobChangeEvent event) {
 
 		shell.getDisplay().asyncExec(new Runnable() {
 
-			@Override
 			public void run() {
 
 				IStatus resultStatus = event.getResult();

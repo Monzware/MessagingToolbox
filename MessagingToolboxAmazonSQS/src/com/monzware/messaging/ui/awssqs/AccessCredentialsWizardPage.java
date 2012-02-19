@@ -36,7 +36,6 @@ public class AccessCredentialsWizardPage extends WizardPage implements Messaging
 		super(pageName, title, titleImage);
 	}
 
-	@Override
 	public void createControl(Composite parent) {
 
 		IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
@@ -88,12 +87,10 @@ public class AccessCredentialsWizardPage extends WizardPage implements Messaging
 
 	}
 
-	@Override
 	public void setEndpointSystem(EndpointSystem system) {
 		this.system = (AmazonSQSEndpointSystemImpl) system;
 	}
 
-	@Override
 	public void updateEndPointSystem() {
 		system.setAccessKeyID(accessKeyID.getText());
 		system.setSecretAccessKey(secretAccessKey.getText());

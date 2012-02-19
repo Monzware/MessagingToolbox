@@ -41,7 +41,6 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		setDescription("Select destinations to use for system");
 	}
 
-	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
@@ -66,7 +65,6 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 				BusyIndicator.showWhile(e.display, new Runnable() {
 
-					@Override
 					public void run() {
 						lookupDestinations();
 					}
@@ -144,13 +142,11 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		super.setVisible(visible);
 	}
 
-	@Override
 	public void setEndpointSystem(EndpointSystem system) {
 		this.system = (JBossEndpointSystemImpl) system;
 
 	}
 
-	@Override
 	public void updateEndPointSystem() {
 
 		if (table != null) {

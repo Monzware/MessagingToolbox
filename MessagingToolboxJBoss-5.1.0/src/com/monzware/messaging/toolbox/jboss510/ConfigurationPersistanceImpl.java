@@ -14,7 +14,6 @@ public class ConfigurationPersistanceImpl implements ConfigurationPersistance {
 	private static final String SERVERPORT_ELEMENT = "Port";
 	private static final String SERVERNAME_ELEMENT = "ServerName";
 
-	@Override
 	public EndpointSystem getEndpointSystemFromConfiguration(String pluginId, String systemName, IMemento esMemento) {
 
 		String serverName = esMemento.getString(SERVERNAME_ELEMENT);
@@ -35,7 +34,6 @@ public class ConfigurationPersistanceImpl implements ConfigurationPersistance {
 		return es;
 	}
 
-	@Override
 	public void addEndpointSystemToConfiguration(EndpointSystem system, IMemento endpointSystemMemento) {
 
 		JBossEndpointSystemImpl sys = (JBossEndpointSystemImpl) system;

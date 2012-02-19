@@ -14,7 +14,6 @@ public class ConfigurationPersistanceImpl implements ConfigurationPersistance {
 	private static final String SECRETACCESSKEY_ELEMENT = "SecretAccessKey";
 	private static final String ACCESSKEYID_ELEMENT = "AccessKeyID";
 
-	@Override
 	public EndpointSystem getEndpointSystemFromConfiguration(String pluginId, String systemName, IMemento esMemento) {
 
 		String accessKeyID = esMemento.getString(ACCESSKEYID_ELEMENT);
@@ -35,7 +34,6 @@ public class ConfigurationPersistanceImpl implements ConfigurationPersistance {
 		return es;
 	}
 
-	@Override
 	public void addEndpointSystemToConfiguration(EndpointSystem system, IMemento endpointSystemMemento) {
 
 		AmazonSQSEndpointSystemImpl sys = (AmazonSQSEndpointSystemImpl) system;

@@ -31,7 +31,6 @@ public class JBossEndpointSystemImpl implements EndpointSystem {
 
 	}
 
-	@Override
 	public boolean isActive() {
 		return false;
 	}
@@ -44,12 +43,10 @@ public class JBossEndpointSystemImpl implements EndpointSystem {
 		return serverPort;
 	}
 
-	@Override
 	public Collection<? extends Endpoint> getEndpoints() {
 		return eps;
 	}
 
-	@Override
 	public String getSystemName() {
 		return systemName;
 	}
@@ -67,20 +64,18 @@ public class JBossEndpointSystemImpl implements EndpointSystem {
 		return getSystemName();
 	}
 
-	@Override
 	public void setSystemName(String systemName) {
 		this.systemName = systemName;
 
 	}
 
 	/*
-	 * @Override public void setProviderId(String providerExtensionId) {
+	 * public void setProviderId(String providerExtensionId) {
 	 * this.providerExtensionId = providerExtensionId;
 	 * 
 	 * }
 	 */
 
-	@Override
 	public String getProviderId() {
 		return providerExtensionId;
 	}

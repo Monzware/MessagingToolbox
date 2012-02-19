@@ -37,7 +37,6 @@ public class SendToEndpointAction extends Action {
 		setImageDescriptor(myImage);
 	}
 
-	@Override
 	public void runWithEvent(Event event) {
 
 		IWorkbench workbench = PlatformUI.getWorkbench();
