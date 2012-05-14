@@ -71,4 +71,8 @@ public class AmazonSQSEndpointSystemImpl implements EndpointSystem {
 	public void setSecretAccessKey(String secretAccessKey) {
 		this.secretAccessKey = secretAccessKey;
 	}
+
+	public String getTooltipText() {
+		return null;
+	}
 }
