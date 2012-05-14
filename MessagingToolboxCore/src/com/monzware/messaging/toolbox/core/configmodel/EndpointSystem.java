@@ -12,10 +12,8 @@ public interface EndpointSystem {
 
 	public void setSystemName(String text);
 
-	// public void setProviderName(String systemName);
-
-	// public void setProviderId(String providerId);
-
 	public String getProviderId();
+
+	public String getTooltipText();
 
 }

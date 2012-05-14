@@ -28,7 +28,6 @@ public class JBossEndpointSystemImpl implements EndpointSystem {
 
 	public void add(JBossEndpointImpl ep) {
 		eps.add(ep);
-
 	}
 
 	public boolean isActive() {
