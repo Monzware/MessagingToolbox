@@ -1,6 +1,9 @@
 package com.monzware.messaging.ui.jboss;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -102,23 +105,26 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 			InitialContext jndiContext = new InitialContext(properties);
 
+			List<Destination> distinations = new ArrayList<Destination>();
+
 			NamingEnumeration<NameClassPair> queueList = jndiContext.list("/queue");
 			while (queueList.hasMore()) {
 				NameClassPair nc = queueList.next();
-
-				TableItem item = new TableItem(table, SWT.NONE);
-				item.setText("/queue/" + nc.getName());
-				item.setImage(endpointImage);
+				distinations.add(new Destination(true, nc.getName()));
 			}
 
 			NamingEnumeration<NameClassPair> topicList = jndiContext.list("/topic");
 			while (topicList.hasMore()) {
 				NameClassPair nc = topicList.next();
-				System.out.println(nc.getName());
-				nc.getClassName();
+				distinations.add(new Destination(false, nc.getName()));
+			}
 
+			Collections.sort(distinations);
+
+			for (Destination destination : distinations) {
 				TableItem item = new TableItem(table, SWT.NONE);
-				item.setText("/topic/" + nc.getName());
+				item.setText((destination.isQueue() ? "/queue/" : "/topic/") + destination.getName());
+				item.setImage(endpointImage);
 			}
 
 			setErrorMessage(null);

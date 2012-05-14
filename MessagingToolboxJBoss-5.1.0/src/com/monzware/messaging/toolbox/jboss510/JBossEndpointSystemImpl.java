@@ -69,14 +69,11 @@ public class JBossEndpointSystemImpl implements EndpointSystem {
 
 	}
 
-	/*
-	 * public void setProviderId(String providerExtensionId) {
-	 * this.providerExtensionId = providerExtensionId;
-	 * 
-	 * }
-	 */
-
 	public String getProviderId() {
 		return providerExtensionId;
+	}
+
+	public String getTooltipText() {
+		return serverName + ":" + serverPort;
 	}
 }
