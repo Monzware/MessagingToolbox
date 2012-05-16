@@ -6,12 +6,13 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.osgi.framework.Bundle;
 
+import com.monzware.messaging.toolbox.PluginTool;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
-import com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard;
 import com.monzware.messaging.toolbox.providers.ObjectFactory;
 
 public class ProviderConfiguration {
@@ -22,16 +23,19 @@ public class ProviderConfiguration {
 	private EndpointSystem es = null;
 
 	private List<WizardPage> providerWizardPages = null;
-	private final MessagingSystemWizard messagingSystemWizard;
+	private final Wizard messagingSystemWizard;
 	private IConfigurationElement[] configurationElements;
 	private Bundle bundle;
+	private PluginTool pluginTool;
 
-	public ProviderConfiguration(IExtension providerExtension, MessagingSystemWizard messagingSystemWizard) {
+	public ProviderConfiguration(IExtension providerExtension, Wizard messagingSystemWizard) {
 		this.messagingSystemWizard = messagingSystemWizard;
 		this.configurationElements = providerExtension.getConfigurationElements();
 
 		String pluginName = providerExtension.getContributor().getName();
 		bundle = Platform.getBundle(pluginName);
+
+		pluginTool = new PluginTool(bundle);
 
 		providerExtensionId = providerExtension.getUniqueIdentifier();
 		providerName = providerExtension.getLabel();
@@ -46,15 +50,15 @@ public class ProviderConfiguration {
 				for (IConfigurationElement iConfigurationElement : configurationElements) {
 
 					if (iConfigurationElement.getName().equals("configurationwizardpage")) {
-						WizardPage page = getConfigurationWizardPage(iConfigurationElement);
+						WizardPage page = pluginTool.getConfigurationWizardPage(iConfigurationElement, messagingSystemWizard);
 
 						if (page instanceof MessagingSystemWizardExtention) {
-							MessagingSystemWizardExtention mswe = (MessagingSystemWizardExtention) page;
-							mswe.setEndpointSystem(getEndpointSystem());
+							@SuppressWarnings("unchecked")
+							MessagingSystemWizardExtention<EndpointSystem> mswe = (MessagingSystemWizardExtention<EndpointSystem>) page;
+							mswe.setNewSystem(getEndpointSystem());
 
 						}
 						providerWizardPages.add(page);
-
 					}
 				}
 
@@ -113,18 +117,4 @@ public class ProviderConfiguration {
 		Class<?> loadClass = bundle.loadClass(pageClass);
 		return (ObjectFactory) loadClass.newInstance();
 	}
-
-	private WizardPage getConfigurationWizardPage(IConfigurationElement iConfigurationElement) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		String systemName = iConfigurationElement.getAttribute("name");
-		String pageClass = iConfigurationElement.getAttribute("class");
-
-		Class<?> loadClass = bundle.loadClass(pageClass);
-
-		WizardPage page = (WizardPage) loadClass.newInstance();
-		page.setWizard(messagingSystemWizard);
-		page.setTitle(systemName);
-
-		return page;
-	}
-
 }

@@ -174,6 +174,16 @@ public class EndpointManager {
 		StatusManager.getManager().handle(sa, StatusManager.LOG);
 	}
 
+	public void replaceEndpointSystem(EndpointSystem oldSystem, EndpointSystem newSystem) {
+		getEndpointSystems().remove(oldSystem);
+		getEndpointSystems().add(newSystem);
+
+		for (EndpointsystemChangeListener l : endpointsystemChangeListeners) {
+			l.endPointAdded(newSystem);
+			l.endPointDeleted(oldSystem);
+		}
+	}
+
 	public void addEndpointSystem(EndpointSystem system) {
 		getEndpointSystems().add(system);
 

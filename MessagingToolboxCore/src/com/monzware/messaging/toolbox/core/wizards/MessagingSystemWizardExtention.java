@@ -2,10 +2,10 @@ package com.monzware.messaging.toolbox.core.wizards;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 
-public interface MessagingSystemWizardExtention {
+public interface MessagingSystemWizardExtention<T extends EndpointSystem> {
 
-	void setEndpointSystem(EndpointSystem system);
+	public void setNewSystem(T system);
 
-	void updateEndPointSystem();
+	public void updateNewSystem();
 
 }

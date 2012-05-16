@@ -2,9 +2,12 @@ package com.monzware.messaging.ui.jboss;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -25,19 +28,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
-import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
+import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
+import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardEditableExtention;
 import com.monzware.messaging.toolbox.jboss510.JBossEndpointImpl;
 import com.monzware.messaging.toolbox.jboss510.JBossEndpointSystemImpl;
 import com.monzware.messaging.toolbox.jboss510.classloader.JBossClientClassLoaderManager;
 
-public class DestinationWizardPage extends WizardPage implements MessagingSystemWizardExtention {
+public class DestinationWizardPage extends WizardPage implements MessagingSystemWizardEditableExtention<JBossEndpointSystemImpl> {
 
-	private JBossEndpointSystemImpl system;
+	private JBossEndpointSystemImpl newSystem;
 	private Table table;
 	private Image endpointImage;
-
-	// private Label statusLabel;
+	private JBossEndpointSystemImpl oldSystem;
 
 	public DestinationWizardPage() {
 		super("Destinations");
@@ -69,7 +71,7 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 				BusyIndicator.showWhile(e.display, new Runnable() {
 
 					public void run() {
-						lookupDestinations();
+						addDestinations();
 					}
 				});
 
@@ -79,10 +81,33 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 		setControl(container);
 	}
 
-	private void lookupDestinations() {
+	private void addDestinations() {
 
 		table.removeAll();
 
+		Set<Destination> distinations = new HashSet<Destination>();
+
+		if (oldSystem != null) {
+			Collection<? extends Endpoint> endpoints = oldSystem.getEndpoints();
+			for (Endpoint endpoint : endpoints) {
+				distinations.add(new Destination(endpoint.getName(), false));
+			}
+		}
+
+		getDestinationsFromServer(distinations, newSystem);
+
+		List<Destination> sortedDistinations = new ArrayList<Destination>(distinations);
+		Collections.sort(sortedDistinations);
+
+		for (Destination destination : sortedDistinations) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(destination.getName());
+			item.setImage(endpointImage);
+			item.setChecked(!destination.isNew());
+		}
+	}
+
+	private void getDestinationsFromServer(Set<Destination> distinations, JBossEndpointSystemImpl system) {
 		Thread currentThread = Thread.currentThread();
 		ClassLoader oldCL = currentThread.getContextClassLoader();
 
@@ -105,26 +130,16 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 
 			InitialContext jndiContext = new InitialContext(properties);
 
-			List<Destination> distinations = new ArrayList<Destination>();
-
 			NamingEnumeration<NameClassPair> queueList = jndiContext.list("/queue");
 			while (queueList.hasMore()) {
 				NameClassPair nc = queueList.next();
-				distinations.add(new Destination(true, nc.getName()));
+				distinations.add(new Destination("/queue/" + nc.getName()));
 			}
 
 			NamingEnumeration<NameClassPair> topicList = jndiContext.list("/topic");
 			while (topicList.hasMore()) {
 				NameClassPair nc = topicList.next();
-				distinations.add(new Destination(false, nc.getName()));
-			}
-
-			Collections.sort(distinations);
-
-			for (Destination destination : distinations) {
-				TableItem item = new TableItem(table, SWT.NONE);
-				item.setText((destination.isQueue() ? "/queue/" : "/topic/") + destination.getName());
-				item.setImage(endpointImage);
+				distinations.add(new Destination("/topic/" + nc.getName()));
 			}
 
 			setErrorMessage(null);
@@ -142,18 +157,17 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 	public void setVisible(boolean visible) {
 
 		if (visible) {
-			lookupDestinations();
+			addDestinations();
 		}
 
 		super.setVisible(visible);
 	}
 
-	public void setEndpointSystem(EndpointSystem system) {
-		this.system = (JBossEndpointSystemImpl) system;
-
+	public void setNewSystem(JBossEndpointSystemImpl newSystem) {
+		this.newSystem = newSystem;
 	}
 
-	public void updateEndPointSystem() {
+	public void updateNewSystem() {
 
 		if (table != null) {
 
@@ -161,10 +175,14 @@ public class DestinationWizardPage extends WizardPage implements MessagingSystem
 			for (TableItem tableItem : items) {
 
 				if (tableItem.getChecked()) {
-					JBossEndpointImpl ep = new JBossEndpointImpl(system, tableItem.getText());
-					system.add(ep);
+					JBossEndpointImpl ep = new JBossEndpointImpl(newSystem, tableItem.getText());
+					newSystem.add(ep);
 				}
 			}
 		}
+	}
+
+	public void setOldSystem(JBossEndpointSystemImpl oldSystem) {
+		this.oldSystem = oldSystem;
 	}
 }

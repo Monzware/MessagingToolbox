@@ -14,15 +14,15 @@ import org.eclipse.swt.widgets.Text;
 
 import com.monzware.messaging.toolbox.awssqs.Activator;
 import com.monzware.messaging.toolbox.awssqs.AmazonSQSEndpointSystemImpl;
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
-import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
+import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardEditableExtention;
 import com.monzware.messaging.ui.preferences.awssqs.VendorPreferenceConstants;
 
-public class AccessCredentialsWizardPage extends WizardPage implements MessagingSystemWizardExtention {
+public class AccessCredentialsWizardPage extends WizardPage implements MessagingSystemWizardEditableExtention<AmazonSQSEndpointSystemImpl> {
 
 	private Text accessKeyID;
 	private Text secretAccessKey;
-	private AmazonSQSEndpointSystemImpl system;
+	private AmazonSQSEndpointSystemImpl newSystem;
+	private AmazonSQSEndpointSystemImpl oldSystem;
 
 	public AccessCredentialsWizardPage() {
 		this("Test");
@@ -53,14 +53,10 @@ public class AccessCredentialsWizardPage extends WizardPage implements Messaging
 
 		accessKeyID = new Text(container, SWT.BORDER | SWT.SINGLE);
 		accessKeyID.setEditable(true);
-		accessKeyID.setText(defaultAccessKeyID);
-
-		system.setAccessKeyID(defaultAccessKeyID);
-		system.setSecretAccessKey(defaultSecretAccessKey);
 
 		accessKeyID.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				system.setAccessKeyID(accessKeyID.getText());
+				newSystem.setAccessKeyID(accessKeyID.getText());
 			}
 		});
 
@@ -72,28 +68,43 @@ public class AccessCredentialsWizardPage extends WizardPage implements Messaging
 
 		secretAccessKey = new Text(container, SWT.BORDER | SWT.SINGLE);
 		secretAccessKey.setEditable(true);
-		secretAccessKey.setText(defaultSecretAccessKey);
 
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		secretAccessKey.setLayoutData(gd);
 
 		secretAccessKey.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				system.setSecretAccessKey(secretAccessKey.getText());
+				newSystem.setSecretAccessKey(secretAccessKey.getText());
 			}
 		});
+
+		if (oldSystem == null) {
+			accessKeyID.setText(defaultAccessKeyID);
+			secretAccessKey.setText(defaultSecretAccessKey);
+			newSystem.setAccessKeyID(defaultAccessKeyID);
+			newSystem.setSecretAccessKey(defaultSecretAccessKey);
+		} else {
+			accessKeyID.setText(oldSystem.getAccessKeyID());
+			secretAccessKey.setText(oldSystem.getSecretAccessKey());
+			newSystem.setAccessKeyID(oldSystem.getAccessKeyID());
+			newSystem.setSecretAccessKey(oldSystem.getSecretAccessKey());
+		}
 
 		setControl(container);
 
 	}
 
-	public void setEndpointSystem(EndpointSystem system) {
-		this.system = (AmazonSQSEndpointSystemImpl) system;
+	public void setNewSystem(AmazonSQSEndpointSystemImpl newSystem) {
+		this.newSystem = newSystem;
 	}
 
-	public void updateEndPointSystem() {
-		system.setAccessKeyID(accessKeyID.getText());
-		system.setSecretAccessKey(secretAccessKey.getText());
+	public void updateNewSystem() {
+		newSystem.setAccessKeyID(accessKeyID.getText());
+		newSystem.setSecretAccessKey(secretAccessKey.getText());
+	}
+
+	public void setOldSystem(AmazonSQSEndpointSystemImpl oldSystem) {
+		this.oldSystem = oldSystem;
 	}
 
 }

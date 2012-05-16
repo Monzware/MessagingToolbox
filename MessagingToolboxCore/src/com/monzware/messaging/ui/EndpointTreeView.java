@@ -2,6 +2,7 @@ package com.monzware.messaging.ui;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -23,18 +24,17 @@ import com.monzware.messaging.toolbox.EndpointManager;
 import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointsystemChangeListener;
-import com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard;
+import com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemEditWizard;
 
 public class EndpointTreeView extends ViewPart {
 
-	private Action addServerAction;
 	private Shell shell;
 	private Action editServerAction;
 	private Action removeServerAction;
 	private TreeViewer viewer;
 
 	public EndpointTreeView() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public void createPartControl(Composite parent) {
@@ -42,6 +42,9 @@ public class EndpointTreeView extends ViewPart {
 		shell = parent.getShell();
 
 		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
+
+		ColumnViewerToolTipSupport.enableFor(viewer);
+
 		new DrillDownAdapter(viewer);
 		viewer.setContentProvider(new EndpointTreeViewContentProvider(this));
 		viewer.setLabelProvider(new EndpointViewLabelProvider(parent.getDisplay()));
@@ -69,8 +72,7 @@ public class EndpointTreeView extends ViewPart {
 
 	}
 
-	public void setFocus() {
-		// TODO Auto-generated method stub
+	public void setFocus() {	
 
 	}
 
@@ -80,47 +82,30 @@ public class EndpointTreeView extends ViewPart {
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-
-		// manager.add(addServerAction);
-		// manager.add(editServerAction);
+		manager.add(editServerAction);
 		manager.add(removeServerAction);
-
 	}
 
 	private void makeActions() {
 
-		addServerAction = new Action() {
-			public void run() {
-				MessagingSystemWizard wizard = new MessagingSystemWizard();
-
-				wizard.addPages();
-				wizard.init(PlatformUI.getWorkbench(), null);
-				WizardDialog dialog = new WizardDialog(shell, wizard);
-
-				dialog.open();
-			}
-		};
-
-		addServerAction.setEnabled(true);
-		addServerAction.setText("Add server");
-		addServerAction.setToolTipText("Add server");
-		addServerAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
-
 		editServerAction = new Action() {
 			public void run() {
-				MessagingSystemWizard wizard = new MessagingSystemWizard();
-				wizard.addPages();
-				wizard.init(PlatformUI.getWorkbench(), null);
-				WizardDialog dialog = new WizardDialog(shell, wizard);
+				ISelection selection = viewer.getSelection();
+				Object obj = ((IStructuredSelection) selection).getFirstElement();
+				if (obj instanceof EndpointSystem) {
+					EndpointSystem eps = (EndpointSystem) obj;
+					MessagingSystemEditWizard wizard = new MessagingSystemEditWizard(eps);
+					WizardDialog dialog = new WizardDialog(shell, wizard);
+					dialog.open();
+				}
 
-				dialog.open();
 			}
 		};
 
 		editServerAction.setEnabled(true);
 		editServerAction.setText("Change server");
 		editServerAction.setToolTipText("Change server");
-		editServerAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+		editServerAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
 
 		removeServerAction = new Action() {
 			public void run() {

@@ -11,7 +11,7 @@
       </category>
       <wizard
             category="com.monzware.messaging.toolbox.core"
-            class="com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemWizard"
+            class="com.monzware.messaging.toolbox.core.wizards.impl.MessagingSystemNewWizard"
             icon="icons/databases.png"
             id="com.monzware.messaging.toolbox.core.wizards.ServerWizard.SampleNewWizard"
             name="Messaging system">

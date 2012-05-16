@@ -12,17 +12,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
-import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardExtention;
+import com.monzware.messaging.toolbox.core.wizards.MessagingSystemWizardEditableExtention;
 import com.monzware.messaging.toolbox.jboss.Activator;
 import com.monzware.messaging.toolbox.jboss510.JBossEndpointSystemImpl;
 import com.monzware.messaging.ui.preferences.jboss.VendorPreferenceConstants;
 
-public class ServerWizardPage extends WizardPage implements MessagingSystemWizardExtention {
+public class ServerWizardPage extends WizardPage implements MessagingSystemWizardEditableExtention<JBossEndpointSystemImpl> {
 
 	private Text serverName;
 	private Text port;
-	private JBossEndpointSystemImpl system;
+	private JBossEndpointSystemImpl newSystem;
+	private JBossEndpointSystemImpl oldSystem;
 
 	public ServerWizardPage() {
 		this("Test");
@@ -38,10 +38,6 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 
 	public void createControl(Composite parent) {
 
-		IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
-		String defaultServer = ps.getString(VendorPreferenceConstants.DEFAULTSERVER);
-		String defaultPort = ps.getString(VendorPreferenceConstants.DEFAULTPORT);
-
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
@@ -53,14 +49,10 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 
 		serverName = new Text(container, SWT.BORDER | SWT.SINGLE);
 		serverName.setEditable(true);
-		serverName.setText(defaultServer);
-
-		system.setServerName(defaultServer);
-		system.setPortNumber(defaultPort);
 
 		serverName.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				system.setServerName(serverName.getText());
+				newSystem.setServerName(serverName.getText());
 			}
 		});
 
@@ -72,11 +64,27 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 
 		port = new Text(container, SWT.BORDER | SWT.SINGLE);
 		port.setEditable(true);
-		port.setText(defaultPort);
+
+		if (oldSystem == null) {
+			IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
+			String defaultServer = ps.getString(VendorPreferenceConstants.DEFAULTSERVER);
+			String defaultPort = ps.getString(VendorPreferenceConstants.DEFAULTPORT);
+
+			serverName.setText(defaultServer);
+			port.setText(defaultPort);
+			newSystem.setServerName(defaultServer);
+			newSystem.setPortNumber(defaultPort);
+
+		} else {
+			serverName.setText(oldSystem.getServerName());
+			port.setText(oldSystem.getPortNumber());
+			newSystem.setServerName(oldSystem.getServerName());
+			newSystem.setPortNumber(oldSystem.getPortNumber());
+		}
 
 		port.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				system.setPortNumber(port.getText());
+				newSystem.setPortNumber(port.getText());
 			}
 		});
 
@@ -84,13 +92,17 @@ public class ServerWizardPage extends WizardPage implements MessagingSystemWizar
 
 	}
 
-	public void setEndpointSystem(EndpointSystem system) {
-		this.system = (JBossEndpointSystemImpl) system;
+	public void setNewSystem(JBossEndpointSystemImpl newSystem) {
+		this.newSystem = newSystem;
 	}
 
-	public void updateEndPointSystem() {
-		system.setServerName(serverName.getText());
-		system.setPortNumber(port.getText());
+	public void updateNewSystem() {
+		newSystem.setServerName(serverName.getText());
+		newSystem.setPortNumber(port.getText());
+	}
+
+	public void setOldSystem(JBossEndpointSystemImpl oldSystem) {
+		this.oldSystem = oldSystem;
 	}
 
 }

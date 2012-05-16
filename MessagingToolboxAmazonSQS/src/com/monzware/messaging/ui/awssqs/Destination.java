@@ -1,4 +1,4 @@
-package com.monzware.messaging.ui.jboss;
+package com.monzware.messaging.ui.awssqs;
 
 public class Destination implements Comparable<Destination> {
 
