@@ -41,5 +41,21 @@
             name="Messaging Toolbox">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.monzware.messaging.ui.editor.EndpointEditor"
+            default="false"
+            id="com.monzware.messaging.ui.MessagingToolboxEndpointEditor"
+            name="Endpoint Data view">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="com.monzware.messaging.ui.editor.EndpointEditorInputFactory"
+            id="com.monzware.messaging.ui.MessagingToolboxEndpointEditorFactory">
+      </factory>
+   </extension>
    
 </plugin>

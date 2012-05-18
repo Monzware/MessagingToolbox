@@ -69,6 +69,8 @@ public class EndpointTreeView extends ViewPart {
 				viewer.refresh();
 			}
 		});
+		
+		viewer.addOpenListener(new EndpointTreeViewOpenListener());
 
 	}
 
