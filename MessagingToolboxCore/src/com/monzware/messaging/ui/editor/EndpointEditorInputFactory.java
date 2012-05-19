@@ -1,8 +1,15 @@
 package com.monzware.messaging.ui.editor;
 
+import java.util.Collection;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
+
+import com.monzware.messaging.toolbox.EndpointManager;
+import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
+import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 
 /**
  * Factory for saving and restoring a <code>FileEditorInput</code>. The stored
@@ -24,9 +31,14 @@ public class EndpointEditorInputFactory implements IElementFactory {
 	private static final String ID_FACTORY = "com.monzware.messaging.ui.MessagingToolboxEndpointEditorFactory"; //$NON-NLS-1$
 
 	/**
-	 * Tag for the IFile.fullPath of the file resource.
+	 * Tag the system name
 	 */
-	private static final String TAG_PATH = "path"; //$NON-NLS-1$
+	private static final String TAG_SYSTEM_NAME = "SystemName";
+
+	/**
+	 * Tag the endpoint name
+	 */
+	private static final String TAG_ENDPOINT_NAME = "EndpointName";
 
 	/**
 	 * Creates a new factory.
@@ -38,19 +50,27 @@ public class EndpointEditorInputFactory implements IElementFactory {
 	 * (non-Javadoc) Method declared on IElementFactory.
 	 */
 	public IAdaptable createElement(IMemento memento) {
-		// Get the file name.
-		//String fileName = memento.getString(TAG_PATH);
-		//if (fileName == null) {
-			return null;
-		//}
 
-		// Get a handle to the IFile...which can be a handle
-		// to a resource that does not exist in workspace
-		//IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
-		//if (file != null) {
-		//	return new FileEditorInput(file);
-		
-		//return null;
+		String endpointName = memento.getString(TAG_ENDPOINT_NAME);
+		String systemName = memento.getString(TAG_SYSTEM_NAME);
+
+		if (endpointName != null && systemName != null) {
+
+			EndpointManager epm = MessagingToolboxPlugin.getDefault().getEndpointManager();
+			Collection<EndpointSystem> endpointSystems = epm.getEndpointSystems();
+			for (EndpointSystem endpointSystem : endpointSystems) {
+				if (endpointSystem.getSystemName().equals(systemName)) {
+					Collection<? extends Endpoint> endpoints = endpointSystem.getEndpoints();
+					for (Endpoint endpoint : endpoints) {
+						if (endpoint.getName().equals(endpointName)) {
+							return new EndpointEditorInput(endpoint);
+						}
+					}
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -71,7 +91,10 @@ public class EndpointEditorInputFactory implements IElementFactory {
 	 *            the file editor input
 	 */
 	public static void saveState(IMemento memento, EndpointEditorInput input) {
-		
-		//memento.putString(TAG_PATH, file.getFullPath().toString());
+
+		Endpoint endpoint = input.getEndpoint();
+
+		memento.putString(TAG_ENDPOINT_NAME, endpoint.getName());
+		memento.putString(TAG_SYSTEM_NAME, endpoint.getEndpointsystem().getSystemName());
 	}
 }

@@ -20,7 +20,7 @@ public class AmazonSQSEndpointImpl implements Endpoint {
 	}
 
 	public EndpointReceiver getEndpointReceiver() {
-		return null;
+		return new AmazonSQSEndpointReceiver(es, epName);
 	}
 
 	public String getName() {

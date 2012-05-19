@@ -20,7 +20,7 @@ public class JBossEndpointImpl implements Endpoint {
 	}
 
 	public EndpointReceiver getEndpointReceiver() {
-		return null;
+		return new JBossEndpointReceiver(es, this);
 	}
 
 	public String getName() {

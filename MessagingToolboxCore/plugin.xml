@@ -45,6 +45,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="com.monzware.messaging.ui.editor.EndpointEditor"
+            contributorClass="com.monzware.messaging.ui.editor.EndpointEditorContribution"
             default="false"
             id="com.monzware.messaging.ui.MessagingToolboxEndpointEditor"
             name="Endpoint Data view">

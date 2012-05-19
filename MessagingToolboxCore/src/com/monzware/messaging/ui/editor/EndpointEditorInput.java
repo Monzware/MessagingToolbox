@@ -16,12 +16,12 @@ public class EndpointEditorInput extends PlatformObject implements IEditorInput,
 		this.endpoint = endpoint;
 	}
 
-	public Object getAdapter(Class adapter) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 		return null;// super.getAdapter(adapter);
 	}
 
 	public boolean exists() {
-		return false;
+		return true;
 	}
 
 	public ImageDescriptor getImageDescriptor() {

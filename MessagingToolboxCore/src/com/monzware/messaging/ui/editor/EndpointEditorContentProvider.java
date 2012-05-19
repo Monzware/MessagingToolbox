@@ -4,25 +4,33 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointReceiver;
+import com.monzware.messaging.toolbox.core.configmodel.EndpointReceiverException;
 
 public class EndpointEditorContentProvider implements IStructuredContentProvider {
 
-	public EndpointEditorContentProvider(EndpointReceiver endpointReceiver) {
+	private final EndpointReceiver endpointReceiver;
 
+	public EndpointEditorContentProvider(EndpointReceiver endpointReceiver) {
+		this.endpointReceiver = endpointReceiver;
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public Object[] getElements(Object inputElement) {
-		return new Object[0];
-	}
 
+		if (endpointReceiver == null) {
+			return new Object[0];
+		}
+
+		try {
+			return endpointReceiver.getMessages().toArray();
+		} catch (EndpointReceiverException e) {
+			return new Object[0];
+		}
+	}
 }

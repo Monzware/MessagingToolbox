@@ -13,5 +13,6 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: com.monzware.messaging.toolbox.core.configmodel,
+ com.monzware.messaging.toolbox.core.model,
  com.monzware.messaging.toolbox.core.wizards,
  com.monzware.messaging.toolbox.providers
