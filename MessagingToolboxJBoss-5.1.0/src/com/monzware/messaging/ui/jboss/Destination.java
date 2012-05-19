@@ -15,11 +15,15 @@ public class Destination implements Comparable<Destination> {
 	}
 
 	public int compareTo(Destination o) {
-		return name.compareTo(o.getName());
+		return name.compareToIgnoreCase(o.getName());
 	}
 
 	public String getName() {
 		return name;
+	}
+	
+	public String toString() {
+		return getName();
 	}
 
 	public boolean isNew() {

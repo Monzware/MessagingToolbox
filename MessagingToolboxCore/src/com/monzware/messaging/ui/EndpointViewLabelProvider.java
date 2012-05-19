@@ -1,6 +1,6 @@
 package com.monzware.messaging.ui;
 
-import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Display;
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSystem;
 
-public class EndpointViewLabelProvider extends CellLabelProvider {
+public class EndpointViewLabelProvider extends LabelProvider {
 
 	private final Display display;
 
