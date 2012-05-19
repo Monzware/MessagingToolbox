@@ -1,7 +1,10 @@
 package com.monzware.messaging.ui;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -15,8 +18,6 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
@@ -72,7 +73,7 @@ public class EndpointTreeView extends ViewPart {
 
 	}
 
-	public void setFocus() {	
+	public void setFocus() {
 
 	}
 
@@ -103,9 +104,10 @@ public class EndpointTreeView extends ViewPart {
 		};
 
 		editServerAction.setEnabled(true);
-		editServerAction.setText("Change server");
-		editServerAction.setToolTipText("Change server");
-		editServerAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
+		editServerAction.setText("Change system");
+		editServerAction.setToolTipText("Change system");
+		// editServerAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
+		editServerAction.setImageDescriptor(ImageDescriptor.createFromURL(FileLocator.find(MessagingToolboxPlugin.getDefault().getBundle(), new Path("/icons/databases_edit.png"), null)));
 
 		removeServerAction = new Action() {
 			public void run() {
@@ -121,10 +123,11 @@ public class EndpointTreeView extends ViewPart {
 		};
 
 		removeServerAction.setEnabled(true);
-		removeServerAction.setText("Remove server");
-		removeServerAction.setToolTipText("Remove server");
-		removeServerAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-
+		removeServerAction.setText("Remove system");
+		removeServerAction.setToolTipText("Remove system");
+		// ImageDescriptor.createFromURL(FileLocator.find(MessagingToolboxPlugin.getDefault().getBundle(),
+		// new Path("/icons/databases_delete.png"), null))
+		removeServerAction.setImageDescriptor(ImageDescriptor.createFromURL(FileLocator.find(MessagingToolboxPlugin.getDefault().getBundle(), new Path("/icons/del.png"), null)));
 	}
 
 }
