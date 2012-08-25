@@ -55,7 +55,7 @@ public class EndpointTreeView extends ViewPart {
 		int ops = DND.DROP_COPY | DND.DROP_MOVE;
 		Transfer[] transfers = new Transfer[] { FileTransfer.getInstance(), TextTransfer.getInstance() };
 		viewer.addDropSupport(ops, transfers, new EndpointDropAdapter(viewer));
-
+		
 		makeActions();
 		contributeToActionBars();
 
@@ -70,6 +70,9 @@ public class EndpointTreeView extends ViewPart {
 				viewer.refresh();
 			}
 		});
+		
+		viewer.addSelectionChangedListener(new EndpointTreeViewSelectionChangeListener(editServerAction));
+		viewer.addSelectionChangedListener(new EndpointTreeViewSelectionChangeListener(removeServerAction));
 
 	}
 
@@ -103,7 +106,7 @@ public class EndpointTreeView extends ViewPart {
 			}
 		};
 
-		editServerAction.setEnabled(true);
+		editServerAction.setEnabled(false);
 		editServerAction.setText("Change system");
 		editServerAction.setToolTipText("Change system");
 		// editServerAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
@@ -122,7 +125,7 @@ public class EndpointTreeView extends ViewPart {
 			}
 		};
 
-		removeServerAction.setEnabled(true);
+		removeServerAction.setEnabled(false);
 		removeServerAction.setText("Remove system");
 		removeServerAction.setToolTipText("Remove system");
 		// ImageDescriptor.createFromURL(FileLocator.find(MessagingToolboxPlugin.getDefault().getBundle(),
