@@ -19,17 +19,19 @@ public class EndpointTreeViewOpenListener implements IOpenListener {
 		Object firstElement = selection.getFirstElement();
 
 		if (firstElement instanceof Endpoint) {
+			
 			Endpoint endpoint = (Endpoint) firstElement;
-			// System.out.println(endpoint.getName());
+			if(endpoint.hasReceiver()) {
 
-			IWorkbench wb = PlatformUI.getWorkbench();
-			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
-			IWorkbenchPage page = win.getActivePage();
-
-			try {
-				page.openEditor(new EndpointEditorInput(endpoint), "com.monzware.messaging.ui.MessagingToolboxEndpointEditor");
-			} catch (PartInitException e) {
-				e.printStackTrace();
+				IWorkbench wb = PlatformUI.getWorkbench();
+				IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
+				IWorkbenchPage page = win.getActivePage();
+	
+				try {
+					page.openEditor(new EndpointEditorInput(endpoint), "com.monzware.messaging.ui.MessagingToolboxEndpointEditor");
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

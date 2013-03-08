@@ -24,6 +24,7 @@ import com.monzware.messaging.toolbox.core.configmodel.EndpointReceiver;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointReceiverException;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointReceiverMessage;
 import com.monzware.messaging.toolbox.core.model.EndpointReceiverTextMessage;
+import com.monzware.messaging.toolbox.jboss.Constants;
 import com.monzware.messaging.toolbox.jboss510.classloader.JBossClientClassLoaderManager;
 
 public class JBossEndpointReceiver implements EndpointReceiver {
@@ -49,13 +50,7 @@ public class JBossEndpointReceiver implements EndpointReceiver {
 
 			currentThread.setContextClassLoader(urlClassLoader);
 
-			Properties properties = new Properties();
-			properties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
-			properties.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
-
-			properties.put(Context.PROVIDER_URL, url);
-
-			InitialContext jndiContext = new InitialContext(properties);
+			InitialContext jndiContext = createInitialContext(url);
 
 			Destination dest = (Destination) jndiContext.lookup(ep.getName());
 
@@ -76,13 +71,15 @@ public class JBossEndpointReceiver implements EndpointReceiver {
 				String messageId = message.getJMSMessageID();
 				long jmsTimestamp = message.getJMSTimestamp();
 
+				String userName = message.getStringProperty(Constants.USERNAME_KEY);
+
 				Calendar timeStamp = new GregorianCalendar();
 				timeStamp.setTimeInMillis(jmsTimestamp);
 
 				if (message instanceof TextMessage) {
 					TextMessage textMessage = (TextMessage) message;
 					String messageText = textMessage.getText();
-					result.add(new EndpointReceiverTextMessage(messageId, messageText, timeStamp));
+					result.add(new EndpointReceiverTextMessage(messageId, messageText, timeStamp, userName));
 				}
 			}
 
@@ -112,4 +109,59 @@ public class JBossEndpointReceiver implements EndpointReceiver {
 		return 0;
 	}
 
+	public void clear() throws EndpointReceiverException {
+		Thread currentThread = Thread.currentThread();
+		ClassLoader oldCL = currentThread.getContextClassLoader();
+
+		try {
+			ClassLoader urlClassLoader = JBossClientClassLoaderManager.getClassLoader(oldCL);
+
+			currentThread.setContextClassLoader(urlClassLoader);
+
+			InitialContext jndiContext = createInitialContext(url);
+
+			Destination dest = (Destination) jndiContext.lookup(ep.getName());
+
+			ConnectionFactory facory = (ConnectionFactory) jndiContext.lookup("ConnectionFactory");
+
+			Connection connection = facory.createConnection();
+			Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+
+			MessageConsumer consumer = session.createConsumer(dest);
+
+			connection.start();
+
+			while ((consumer.receive(100)) != null) {
+				// Ignore received message
+			}
+
+			session.commit();
+
+			consumer.close();
+			session.close();
+			connection.close();
+
+		} catch (NameNotFoundException e) {
+			throw new EndpointReceiverException(e.getMessage());
+		} catch (NamingException e) {
+			throw new EndpointReceiverException(e.getRootCause().getMessage());
+		} catch (MalformedURLException e) {
+			throw new EndpointReceiverException("MalformedURLException");
+		} catch (JMSException e) {
+			throw new EndpointReceiverException("JMSException");
+		} finally {
+			currentThread.setContextClassLoader(oldCL);
+		}
+	}
+
+	private InitialContext createInitialContext(String url) throws NamingException {
+		Properties properties = new Properties();
+		properties.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+		properties.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
+
+		properties.put(Context.PROVIDER_URL, url);
+
+		InitialContext jndiContext = new InitialContext(properties);
+		return jndiContext;
+	}
 }

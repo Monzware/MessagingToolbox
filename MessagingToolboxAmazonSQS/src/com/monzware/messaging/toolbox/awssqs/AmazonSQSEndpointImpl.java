@@ -20,7 +20,8 @@ public class AmazonSQSEndpointImpl implements Endpoint {
 	}
 
 	public EndpointReceiver getEndpointReceiver() {
-		return new AmazonSQSEndpointReceiver(es, epName);
+		return null;
+		//return new AmazonSQSEndpointReceiver(es, epName);
 	}
 
 	public String getName() {
@@ -33,5 +34,9 @@ public class AmazonSQSEndpointImpl implements Endpoint {
 
 	public EndpointSystem getEndpointsystem() {
 		return es;
+	}
+
+	public boolean hasReceiver() {
+		return false;
 	}
 }

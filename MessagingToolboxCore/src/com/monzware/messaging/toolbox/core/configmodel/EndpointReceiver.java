@@ -8,4 +8,6 @@ public interface EndpointReceiver {
 
 	public int size() throws EndpointReceiverException;
 
+	public void clear() throws EndpointReceiverException;
+
 }

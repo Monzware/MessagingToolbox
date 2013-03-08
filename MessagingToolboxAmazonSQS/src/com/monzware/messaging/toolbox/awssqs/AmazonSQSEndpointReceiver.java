@@ -45,7 +45,7 @@ public class AmazonSQSEndpointReceiver implements EndpointReceiver {
 				String messageId = message.getMessageId();
 				String body = message.getBody();
 				
-				result.add(new EndpointReceiverTextMessage(messageId, body));
+				result.add(new EndpointReceiverTextMessage(messageId, body, ""));
 			}
 
 			return result;
@@ -59,5 +59,8 @@ public class AmazonSQSEndpointReceiver implements EndpointReceiver {
 
 	public int size() throws EndpointReceiverException {
 		return 0;
+	}
+
+	public void clear() throws EndpointReceiverException {			
 	}
 }

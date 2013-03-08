@@ -12,11 +12,13 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 import com.monzware.messaging.toolbox.core.configmodel.Endpoint;
+import com.monzware.messaging.ui.EndpointMessageViewOpenListener;
 
 public class EndpointEditor extends EditorPart {
 
 	private EndpointEditorInput endPointEditor;
 	private TableViewer viewer;
+	private Composite parent;
 
 	public EndpointEditor() {
 
@@ -56,28 +58,37 @@ public class EndpointEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
-		viewer.setContentProvider(new EndpointEditorContentProvider(endPointEditor.getEndpoint().getEndpointReceiver()));
+		this.parent = parent;
+		viewer = new TableViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		viewer.setContentProvider(new EndpointEditorContentProvider(this, endPointEditor.getEndpoint()));
 		viewer.setLabelProvider(new EndpointEditorLabelProvider());
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
-
+		
 		TableColumn tc1 = new TableColumn(viewer.getTable(), SWT.LEFT, 0);
 		tc1.setText("Id");
 		tc1.setWidth(300);
-
+		
 		TableColumn tc2 = new TableColumn(viewer.getTable(), SWT.LEFT, 1);
 		tc2.setText("Timestamp");
 		tc2.setWidth(120);
-
+		
 		TableColumn tc3 = new TableColumn(viewer.getTable(), SWT.LEFT, 2);
-		tc3.setText("Message");
-		tc3.setWidth(500);
+		tc3.setText("User");
+		tc3.setWidth(120);
+
+		TableColumn tc4 = new TableColumn(viewer.getTable(), SWT.LEFT, 3);
+		tc4.setText("Message");
+		tc4.setWidth(500);
 
 		Image image = new Image(parent.getDisplay(), getClass().getResourceAsStream("/icons/database2.png"));
-		setTitleImage(image);
+		setTitleImage(image);	
 
 		viewer.setInput(getSite());
+		
+		viewer.addOpenListener(new EndpointMessageViewOpenListener());
+		
+		
 	}
 
 	@Override
@@ -89,4 +100,13 @@ public class EndpointEditor extends EditorPart {
 		viewer.refresh();
 	}
 
+	public void setEnabled(boolean enabled) {
+		
+		if (enabled) {
+			viewer.getTable().setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		} else {
+			viewer.getTable().setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+			
+		}
+	}
 }

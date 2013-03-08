@@ -9,25 +9,19 @@ import org.eclipse.ui.IEditorPart;
 import com.monzware.messaging.toolbox.MessagingToolboxPlugin;
 import com.monzware.messaging.ui.editor.EndpointEditor;
 
-public class UpdateEndpointAction extends Action {
+public class UpdateEndpointEditorAction extends Action {
 
 	private ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.find(MessagingToolboxPlugin.getDefault().getBundle(), new Path("/icons/refresh.gif"), null));
 	private IEditorPart targetEditor;
 
-	public UpdateEndpointAction() {
-		super("Update endpont");
+	public UpdateEndpointEditorAction() {
+		super("Update endpoint");
 		setToolTipText("Update the content of the endpoint");
 		setImageDescriptor(image);
 	}
 
 	@Override
 	public void run() {
-
-		/*
-		 * IWorkbench workbench = PlatformUI.getWorkbench(); IWorkbenchWindow ww
-		 * = workbench.getActiveWorkbenchWindow(); IWorkbenchPart activePart =
-		 * ww.getPartService().getActivePart();
-		 */
 
 		if (targetEditor != null && targetEditor instanceof EndpointEditor) {
 			EndpointEditor editor = (EndpointEditor) targetEditor;
@@ -37,7 +31,5 @@ public class UpdateEndpointAction extends Action {
 
 	public void setActiveEditor(IEditorPart targetEditor) {
 		this.targetEditor = targetEditor;
-
 	}
-
 }

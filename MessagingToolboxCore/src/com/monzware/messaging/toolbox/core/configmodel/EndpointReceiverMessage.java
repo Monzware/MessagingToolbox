@@ -10,4 +10,6 @@ public interface EndpointReceiverMessage {
 
 	public Calendar getSendTime();
 
+	public String getUser();
+
 }

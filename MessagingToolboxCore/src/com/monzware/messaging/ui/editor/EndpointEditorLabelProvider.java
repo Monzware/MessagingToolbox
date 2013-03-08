@@ -13,6 +13,10 @@ public class EndpointEditorLabelProvider implements ITableLabelProvider {
 
 	private SimpleDateFormat f = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 
+	public EndpointEditorLabelProvider() {
+
+	}
+
 	public void addListener(ILabelProviderListener listener) {
 
 	}
@@ -52,6 +56,10 @@ public class EndpointEditorLabelProvider implements ITableLabelProvider {
 				return "-";
 
 			case 2:
+				String user = message.getUser();
+				return user != null ? user : "";
+
+			case 3:
 				return message.getMessageContent();
 
 			default:

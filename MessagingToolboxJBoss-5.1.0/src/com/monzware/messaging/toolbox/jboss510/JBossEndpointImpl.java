@@ -34,4 +34,8 @@ public class JBossEndpointImpl implements Endpoint {
 	public EndpointSystem getEndpointsystem() {
 		return es;
 	}
+
+	public boolean hasReceiver() {
+		return true;
+	}
 }

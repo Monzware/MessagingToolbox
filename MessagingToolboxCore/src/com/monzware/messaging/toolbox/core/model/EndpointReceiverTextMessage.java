@@ -9,15 +9,17 @@ public class EndpointReceiverTextMessage implements EndpointReceiverMessage {
 	private final String messageId;
 	private final String messageText;
 	private final Calendar timeStamp;
+	private final String user;
 
-	public EndpointReceiverTextMessage(String messageId, String messageText, Calendar timeStamp) {
+	public EndpointReceiverTextMessage(String messageId, String messageText, Calendar timeStamp, String user) {
 		this.messageId = messageId;
 		this.messageText = messageText;
 		this.timeStamp = timeStamp;
+		this.user = user;
 	}
 
-	public EndpointReceiverTextMessage(String messageId, String messageText) {
-		this(messageId, messageText, null);
+	public EndpointReceiverTextMessage(String messageId, String messageText, String user) {
+		this(messageId, messageText, null, user);
 	}
 
 	public String getMessageId() {
@@ -30,6 +32,10 @@ public class EndpointReceiverTextMessage implements EndpointReceiverMessage {
 
 	public Calendar getSendTime() {
 		return timeStamp;
+	}
+
+	public String getUser() {
+		return user;
 	}
 
 }

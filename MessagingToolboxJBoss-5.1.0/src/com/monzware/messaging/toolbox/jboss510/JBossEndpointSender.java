@@ -17,6 +17,7 @@ import javax.naming.NamingException;
 
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSender;
 import com.monzware.messaging.toolbox.core.configmodel.EndpointSenderException;
+import com.monzware.messaging.toolbox.jboss.Constants;
 import com.monzware.messaging.toolbox.jboss510.classloader.JBossClientClassLoaderManager;
 
 public class JBossEndpointSender implements EndpointSender {
@@ -39,6 +40,8 @@ public class JBossEndpointSender implements EndpointSender {
 
 		try {
 			ClassLoader urlClassLoader = JBossClientClassLoaderManager.getClassLoader(oldCL);
+			
+			String userName = System.getProperty("user.name");
 
 			currentThread.setContextClassLoader(urlClassLoader);
 
@@ -57,6 +60,8 @@ public class JBossEndpointSender implements EndpointSender {
 			Connection connection = facory.createConnection();
 			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			TextMessage textMessage = session.createTextMessage(message);
+			
+			textMessage.setStringProperty(Constants.USERNAME_KEY, userName);
 
 			MessageProducer producer = session.createProducer(dest);
 			producer.send(textMessage);
