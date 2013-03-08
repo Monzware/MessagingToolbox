@@ -71,9 +71,11 @@ public class EndpointTreeView extends ViewPart {
 			}
 		});
 		
+
 		viewer.addSelectionChangedListener(new EndpointTreeViewSelectionChangeListener(editServerAction));
 		viewer.addSelectionChangedListener(new EndpointTreeViewSelectionChangeListener(removeServerAction));
 
+		viewer.addOpenListener(new EndpointTreeViewOpenListener());
 	}
 
 	public void setFocus() {

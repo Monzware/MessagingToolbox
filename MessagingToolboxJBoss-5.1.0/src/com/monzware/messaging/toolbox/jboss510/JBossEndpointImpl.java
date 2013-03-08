@@ -20,7 +20,7 @@ public class JBossEndpointImpl implements Endpoint {
 	}
 
 	public EndpointReceiver getEndpointReceiver() {
-		return null;
+		return new JBossEndpointReceiver(es, this);
 	}
 
 	public String getName() {
@@ -33,5 +33,9 @@ public class JBossEndpointImpl implements Endpoint {
 
 	public EndpointSystem getEndpointsystem() {
 		return es;
+	}
+
+	public boolean hasReceiver() {
+		return true;
 	}
 }

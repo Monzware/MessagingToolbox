@@ -9,9 +9,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.expressions;bundle-version="3.4.300",
  org.eclipse.core.resources;bundle-version="3.7.100",
- org.eclipse.ui.ide;bundle-version="3.7.0"
+ org.eclipse.ui.ide;bundle-version="3.7.0",
+ org.eclipse.ui.editors;bundle-version="3.7.0",
+ org.eclipse.jface.text;bundle-version="3.7.1"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: com.monzware.messaging.toolbox.core.configmodel,
+ com.monzware.messaging.toolbox.core.model,
  com.monzware.messaging.toolbox.core.wizards,
  com.monzware.messaging.toolbox.providers
