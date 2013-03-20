@@ -54,19 +54,20 @@ public class JBossEndpointReceiver implements EndpointReceiver {
 
 			Destination dest = (Destination) jndiContext.lookup(ep.getName());
 
-			ConnectionFactory facory = (ConnectionFactory) jndiContext.lookup("ConnectionFactory");
+			ConnectionFactory facory = (ConnectionFactory) jndiContext.lookup("XAConnectionFactory");
 
 			Connection connection = facory.createConnection();
-			Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+			connection.start();
+			Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);		
 
 			Collection<EndpointReceiverMessage> result = new ArrayList<EndpointReceiverMessage>();
 
 			MessageConsumer consumer = session.createConsumer(dest);
 
-			connection.start();
-
+			long wait = 2000;
+			
 			Message message;
-			while ((message = consumer.receive(100)) != null) {
+			while ((message = consumer.receive(wait)) != null) {				
 
 				String messageId = message.getJMSMessageID();
 				long jmsTimestamp = message.getJMSTimestamp();
@@ -81,6 +82,8 @@ public class JBossEndpointReceiver implements EndpointReceiver {
 					String messageText = textMessage.getText();
 					result.add(new EndpointReceiverTextMessage(messageId, messageText, timeStamp, userName));
 				}
+				
+				wait = 100;
 			}
 
 			session.rollback();
@@ -122,17 +125,19 @@ public class JBossEndpointReceiver implements EndpointReceiver {
 
 			Destination dest = (Destination) jndiContext.lookup(ep.getName());
 
-			ConnectionFactory facory = (ConnectionFactory) jndiContext.lookup("ConnectionFactory");
+			ConnectionFactory facory = (ConnectionFactory) jndiContext.lookup("XAConnectionFactory");
 
 			Connection connection = facory.createConnection();
 			Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
 
 			MessageConsumer consumer = session.createConsumer(dest);
 
-			connection.start();
+			connection.start();			
 
-			while ((consumer.receive(100)) != null) {
-				// Ignore received message
+			long wait = 2000;
+			
+			while ((consumer.receive(wait)) != null) {
+				wait = 100;
 			}
 
 			session.commit();
