@@ -38,8 +38,8 @@ public class SendMessageFromIFileJob extends Job implements EndpointJob {
 
 				monitor.beginTask("Read file", 2);
 
-				InputStream contents = file.getContents();
-				InputStreamToStringConverter conv = new InputStreamToStringConverter(contents);
+				InputStream contents = file.getContents();				
+				InputStreamToStringConverter conv = new InputStreamToStringConverter(contents, file.getCharset());
 
 				monitor.worked(1);
 				monitor.beginTask("Send message to endpoint", 2);

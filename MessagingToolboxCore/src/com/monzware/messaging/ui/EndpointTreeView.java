@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -12,6 +13,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -51,10 +53,18 @@ public class EndpointTreeView extends ViewPart {
 		viewer.setLabelProvider(new EndpointViewLabelProvider(parent.getDisplay()));
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
+		
+		/*if (LocalSelectionTransfer.getTransfer().isSupportedType(event.currentDataType))
+		//*/    ISelection sel = LocalSelectionTransfer.getTransfer().getSelection();
+		
 
 		int ops = DND.DROP_COPY | DND.DROP_MOVE;
-		Transfer[] transfers = new Transfer[] { FileTransfer.getInstance(), TextTransfer.getInstance() };
-		viewer.addDropSupport(ops, transfers, new EndpointDropAdapter(viewer));
+		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer.getTransfer(), FileTransfer.getInstance(), TextTransfer.getInstance() };
+		//viewer.addDropSupport(ops, transfers, new EndpointDropAdapter(viewer));
+		
+		DropTarget target = new DropTarget(viewer.getTree(), ops);
+		target.setTransfer(transfers);
+		target.addDropListener(new EndpointDropAdapter(viewer));		
 		
 		makeActions();
 		contributeToActionBars();
