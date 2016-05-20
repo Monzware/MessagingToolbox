@@ -20,7 +20,7 @@ public class JBossClientClassLoaderManager {
 		IPreferenceStore ps = Activator.getDefault().getPreferenceStore();
 		String configPath = ps.getString(VendorPreferenceConstants.P_PATH);
 
-		String path = configPath + "\\client\\jbossall-client.jar";
+		String path = configPath + File.separator + "client" + File.separator + "jbossall-client.jar";
 
 		URLClassLoader urlClassLoader = classloaders.get(path);
 		if (urlClassLoader == null) {
